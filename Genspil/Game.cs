@@ -18,7 +18,14 @@ namespace Genspil
             this.type = gametype;
         }
 
-        public void Display() { }
+        public static void DisplayGames()
+        {
+            Console.WriteLine("Liste over oprettede spil:");
+            foreach (var game in PseudoDatabase.games)
+            {
+                Console.WriteLine($"Name: {game.type.Name}, Price: {game.price}, Condition: {game.GameCondition}, Genre: {game.type.GameGenre}, Age: {game.type.Age}, Min Players: {game.type.MinPlayers}, Max Players: {game.type.MaxPlayers}, Description: {game.type.Description}");
+            }
+        }
 
         public void Checkout() { }
     }
