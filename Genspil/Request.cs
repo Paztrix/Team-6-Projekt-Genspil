@@ -37,7 +37,7 @@ namespace Genspil
         //Display metode der printer alle requests
         public static void DisplayRequests()
         {
-            foreach (var request in PsudoDatabase.requests)
+            foreach (var request in PseudoDatabase.requests)
             {
                 Console.WriteLine($"ID: {request.ID}, Name: {request.Name}, Phone: {request.Phone}, Email: {request.Email}, Created On: {request.CreatedOn}, Requested {request._gameType.Name}");
             }
