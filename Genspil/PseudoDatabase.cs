@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Genspil
 {
-    public static class PsudoDatabase
+    public static class PseudoDatabase
     {
         public static List<Game> games = new List<Game>();
         public static List<Request> requests = new List<Request>();
