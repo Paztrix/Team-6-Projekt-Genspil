@@ -4,22 +4,16 @@ namespace Genspil
     {
         static void Main(string[] args)
         {
-            PsudoDatabase.DatabaseSeeder();
+            PseudoDatabase.DatabaseSeeder();
 
-            foreach (var game in PsudoDatabase.games)
+            foreach (var game in PseudoDatabase.games)
             {
                 Console.WriteLine($"Name: {game.type.Name}, Price: {game.price}, Condition: {game.GameCondition}, Genre: {game.type.GameGenre}, Age: {game.type.Age}, Min Players: {game.type.MinPlayers}, Max Players: {game.type.MaxPlayers}, Description: {game.type.Description}");
             }
 
             Request.DisplayRequests();
 
-            Console.Write("Do you want to create a new game?: ");
-            string choice = Console.ReadLine();
-
-            if (choice == "yes")
-            {
-                GameCreation();
-            }
+            ShowMenu();
 
             Console.Write("Press key to stop program...");
             Console.ReadLine();
@@ -30,11 +24,11 @@ namespace Genspil
             while (true)
             {
                 Console.WriteLine("\nVelkommen til menuen, du har følgende valg muligheder:");
-                Console.WriteLine("Tryk på 1 for at oprette et spil");
-                Console.WriteLine("Tryk på 2 for at oprette en forespørgsel");
-                Console.WriteLine("Tryk på 3 for at få vist oprettede spil");
-                Console.WriteLine("Tryk på 4 for at få vist oprettede forespørgsler");
-                Console.WriteLine("Tryk på 0 for at afslutte programmet");
+                Console.WriteLine("1: Opret spil");
+                Console.WriteLine("2: Opret forespørgsel");
+                Console.WriteLine("3: Vis spil");
+                Console.WriteLine("4: Vis forespørgsler");
+                Console.WriteLine("0: Afslutte program");
                 Console.Write("Dit valg: ");
 
                 string input = Console.ReadLine();
@@ -43,16 +37,16 @@ namespace Genspil
                 switch (input)
                 {
                     case "1":
-                        CreateGame();
+                        GameCreation();
                         break;
                     case "2":
-                        CreateForespørgsel();
+                        CreateRequest();
                         break;
                     case "3":
-                        DisplayGames();
+                        Game.DisplayGames();
                         break;
                     case "4":
-                        DisplayForespørgsler();
+                        Request.DisplayRequests();
                         break;
                     case "0":
                         Console.WriteLine("Afslutter programmet");
@@ -86,35 +80,34 @@ namespace Genspil
             int maxPlayers = int.Parse(Console.ReadLine());
 
             GameType newGame = new GameType(gameName, gameDesc, minAge, minPlayers, maxPlayers);
+            PseudoDatabase.gametypes.Add(newGame);
 
             Console.WriteLine($"Spillet {newGame.Name} er oprettet!");
         }
 
-        public static void CreateForespørgsel()
+        public static void CreateRequest()
         {
-            Console.Write("Indtast spil navn for forespørgsel: ");
-            string spilNavn = Console.ReadLine();
+            Console.Write("Kundenavn: ");
+            string customerName = Console.ReadLine();
 
-            Console.Write("Indtast spil id: ");
-            int id;
-            while (!int.TryParse(Console.ReadLine(), out id))
-            {
-                Console.Write("Forkert input, spil id skal være et tal. Prøv igen: ");
-            }
+            Console.Write("Telefon: ");
+            string customerNumber = Console.ReadLine();
 
-            Forespørgsel newForespørgsel = new Forespørgsel(spilNavn, id);
-            forespørgsler.Add(newForespørgsel);
+            Console.Write("Email: ");
+            string customerEmail = Console.ReadLine();
+
+            Console.Write("Brætspil: ");
+            string requestedGame = Console.ReadLine();
+
+            DateTime requestDate = DateTime.Now;
+
+            Random random = new Random();
+            int id = random.Next();
+
+            Request newRequest = new Request(id, requestDate, customerName, customerNumber, customerEmail, requestedGame);
+            PseudoDatabase.requests.Add(newRequest);
             Console.WriteLine("\nForespørgsel oprettet:");
-            newForespørgsel.VisForespørgsel();
-        }
-
-        public static void DisplayGames()
-        {
-            Console.WriteLine("Liste over oprettede spil:");
-            foreach (Game game in games)
-            {
-                game.Display();
-            }
+            Request.DisplayRequests();
         }
     }
 }
