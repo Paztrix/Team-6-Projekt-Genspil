@@ -25,6 +25,45 @@ namespace Genspil
             Console.ReadLine();
         }
 
+        public static void ShowMenu()
+        {
+            while (true)
+            {
+                Console.WriteLine("\nVelkommen til menuen, du har følgende valg muligheder:");
+                Console.WriteLine("Tryk på 1 for at oprette et spil");
+                Console.WriteLine("Tryk på 2 for at oprette en forespørgsel");
+                Console.WriteLine("Tryk på 3 for at få vist oprettede spil");
+                Console.WriteLine("Tryk på 4 for at få vist oprettede forespørgsler");
+                Console.WriteLine("Tryk på 0 for at afslutte programmet");
+                Console.Write("Dit valg: ");
+
+                string input = Console.ReadLine();
+                Console.WriteLine();
+
+                switch (input)
+                {
+                    case "1":
+                        CreateGame();
+                        break;
+                    case "2":
+                        CreateForespørgsel();
+                        break;
+                    case "3":
+                        DisplayGames();
+                        break;
+                    case "4":
+                        DisplayForespørgsler();
+                        break;
+                    case "0":
+                        Console.WriteLine("Afslutter programmet");
+                        return;
+                    default:
+                        Console.WriteLine("Ugyldigt input, prøv igen.");
+                        break;
+                }
+            }
+        }
+
         static void GameCreation()
         {
             Console.Write("Indtast spillets navn: ");
@@ -49,6 +88,33 @@ namespace Genspil
             GameType newGame = new GameType(gameName, gameDesc, minAge, minPlayers, maxPlayers);
 
             Console.WriteLine($"Spillet {newGame.Name} er oprettet!");
+        }
+
+        public static void CreateForespørgsel()
+        {
+            Console.Write("Indtast spil navn for forespørgsel: ");
+            string spilNavn = Console.ReadLine();
+
+            Console.Write("Indtast spil id: ");
+            int id;
+            while (!int.TryParse(Console.ReadLine(), out id))
+            {
+                Console.Write("Forkert input, spil id skal være et tal. Prøv igen: ");
+            }
+
+            Forespørgsel newForespørgsel = new Forespørgsel(spilNavn, id);
+            forespørgsler.Add(newForespørgsel);
+            Console.WriteLine("\nForespørgsel oprettet:");
+            newForespørgsel.VisForespørgsel();
+        }
+
+        public static void DisplayGames()
+        {
+            Console.WriteLine("Liste over oprettede spil:");
+            foreach (Game game in games)
+            {
+                game.Display();
+            }
         }
     }
 }
