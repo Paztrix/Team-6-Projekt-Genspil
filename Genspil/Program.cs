@@ -1,4 +1,4 @@
-﻿namespace Genspil
+namespace Genspil
 {
     internal class Program
     {
@@ -13,63 +13,42 @@
 
             Request.DisplayRequests();
 
+            Console.Write("Do you want to create a new game?: ");
+            string choice = Console.ReadLine();
+
+            if (choice == "yes")
+            {
+                GameCreation();
+            }
+
             Console.Write("Press key to stop program...");
             Console.ReadLine();
+        }
 
-class GameCreation
-       {
-           static void Main(string[] args)
-           {
-               GameType newGame = CreateNewGame();
-               Console.WriteLine($"Spillet {newGame.GameName} er oprettet!");
-           }
+        static void GameCreation()
+        {
+            Console.Write("Indtast spillets navn: ");
+            string gameName = Console.ReadLine();
 
-           static GameType CreateNewGame()
-           {
-               
-               Console.Write("Indtast spillets navn: ");
-               string gameName = Console.ReadLine();
 
-               
-               Console.Write("Indtast beskrivelse: ");
-               string gameDesc = Console.ReadLine();
+            Console.Write("Indtast beskrivelse: ");
+            string gameDesc = Console.ReadLine();
 
-              
-               Console.Write("Indtast minimum alder: ");
-               int minAge = int.Parse(Console.ReadLine());
 
-               
-               Console.Write("Indtast minimum spillere: ");
-               int minPlayers = int.Parse(Console.ReadLine());
+            Console.Write("Indtast minimum alder: ");
+            int minAge = int.Parse(Console.ReadLine());
 
-               
-               Console.Write("Indtast maksimum antal spillere: ");
-               int maxPlayers = int.Parse(Console.ReadLine());
 
-               GameType newGame = new GameType(gameName, gameDesc, minAge, minPlayers, maxPlayers);
+            Console.Write("Indtast minimum spillere: ");
+            int minPlayers = int.Parse(Console.ReadLine());
 
-               
-               Console.WriteLine($"Spillet {gameName} er oprettet.");
 
-               return newGame;
-           }
-       }
+            Console.Write("Indtast maksimum antal spillere: ");
+            int maxPlayers = int.Parse(Console.ReadLine());
 
-       class GameCreation
-       {
-           public string GameName { get; set; }
-           public string GameDescription { get; set; }
-           public int MinAge { get; set; }
-           public int MinPlayers { get; set; }
-           public int MaxPlayers { get; set; }
+            GameType newGame = new GameType(gameName, gameDesc, minAge, minPlayers, maxPlayers);
 
-           public GameCreation(string gameName, string gameDescription, int minAge, int minPlayers, int maxPlayers)
-           {
-               GameName = gameName;
-               GameDescription = gameDescription;
-               MinAge = minAge;
-               MinPlayers = minPlayers;
-               MaxPlayers = maxPlayers;
+            Console.WriteLine($"Spillet {newGame.Name} er oprettet!");
         }
     }
 }
