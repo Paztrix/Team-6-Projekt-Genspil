@@ -15,6 +15,61 @@
 
             Console.Write("Press key to stop program...");
             Console.ReadLine();
+
+class GameCreation
+       {
+           static void Main(string[] args)
+           {
+               GameType newGame = CreateNewGame();
+               Console.WriteLine($"Spillet {newGame.GameName} er oprettet!");
+           }
+
+           static GameType CreateNewGame()
+           {
+               
+               Console.Write("Indtast spillets navn: ");
+               string gameName = Console.ReadLine();
+
+               
+               Console.Write("Indtast beskrivelse: ");
+               string gameDesc = Console.ReadLine();
+
+              
+               Console.Write("Indtast minimum alder: ");
+               int minAge = int.Parse(Console.ReadLine());
+
+               
+               Console.Write("Indtast minimum spillere: ");
+               int minPlayers = int.Parse(Console.ReadLine());
+
+               
+               Console.Write("Indtast maksimum antal spillere: ");
+               int maxPlayers = int.Parse(Console.ReadLine());
+
+               GameType newGame = new GameType(gameName, gameDesc, minAge, minPlayers, maxPlayers);
+
+               
+               Console.WriteLine($"Spillet {gameName} er oprettet.");
+
+               return newGame;
+           }
+       }
+
+       class GameCreation
+       {
+           public string GameName { get; set; }
+           public string GameDescription { get; set; }
+           public int MinAge { get; set; }
+           public int MinPlayers { get; set; }
+           public int MaxPlayers { get; set; }
+
+           public GameCreation(string gameName, string gameDescription, int minAge, int minPlayers, int maxPlayers)
+           {
+               GameName = gameName;
+               GameDescription = gameDescription;
+               MinAge = minAge;
+               MinPlayers = minPlayers;
+               MaxPlayers = maxPlayers;
         }
     }
 }
