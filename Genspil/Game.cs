@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace GenspilGameClass
+namespace Genspil
 {
     // Klasse til at håndtere forespørgsler
     public class Forespørgsel
