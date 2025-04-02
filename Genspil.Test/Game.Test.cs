@@ -10,6 +10,21 @@ namespace Genspil.Test
     public class GameTests
     {
         /// <summary>
+        /// Tester at default condition bliver sat til Condition.Perfect, hvis den ikke angives i konstruktøren.
+        /// </summary>
+        [TestMethod]
+        public void Game_Constructor_SetsDefaultCondition_WhenNotProvided()
+        {
+            // Arrange
+            var gameType = new GameType("Uno", "Card game", 7, 2, 10);
+
+            // Act
+            var game = new Game(4, 49.95, gameType); // ingen condition angivet
+
+            // Assert
+            Assert.AreEqual(Condition.Perfect, game.GameCondition);
+        }
+        /// <summary>
         /// Tester om konstruktøren korrekt sætter pris, condition (default) og gametype.
         /// </summary>
         [TestMethod]
@@ -26,7 +41,6 @@ namespace Genspil.Test
             Assert.AreEqual(Condition.Perfect, game.GameCondition);
             Assert.AreEqual(gameType, game.type);
         }
-
         /// <summary>
         /// Tester om konstruktøren korrekt sætter en custom condition, når den angives eksplicit.
         /// </summary>
