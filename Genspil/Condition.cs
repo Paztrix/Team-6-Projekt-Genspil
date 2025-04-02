@@ -11,6 +11,7 @@ namespace Genspil
         Perfect,
         Fine,
         InWorkshop,
-        Unplayble
+        Unplayble,
+        NA
     }
 }

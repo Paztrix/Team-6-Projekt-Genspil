@@ -40,7 +40,7 @@ namespace Genspil
                         GameCreation();
                         break;
                     case "2":
-                        CreateRequest();
+                        //CreateRequest();
                         break;
                     case "3":
                         Game.DisplayGames();
@@ -63,29 +63,42 @@ namespace Genspil
             Console.Write("Indtast spillets navn: ");
             string gameName = Console.ReadLine();
 
-
             Console.Write("Indtast beskrivelse: ");
             string gameDesc = Console.ReadLine();
-
 
             Console.Write("Indtast minimum alder: ");
             int minAge = int.Parse(Console.ReadLine());
 
-
             Console.Write("Indtast minimum spillere: ");
             int minPlayers = int.Parse(Console.ReadLine());
-
 
             Console.Write("Indtast maksimum antal spillere: ");
             int maxPlayers = int.Parse(Console.ReadLine());
 
-            GameType newGame = new GameType(gameName, gameDesc, minAge, minPlayers, maxPlayers);
-            PseudoDatabase.gametypes.Add(newGame);
+            //Tjekker om input er i Enum, hvis ikke sættes den til default NA
+            Console.Write("Indtast genre (f.eks. Campaign eller Familygame): ");
+            string genreInput = Console.ReadLine();
+            Genre genre = Enum.TryParse(genreInput, out Genre parsedGenre) ? parsedGenre : Genre.NA;
 
-            Console.WriteLine($"Spillet {newGame.Name} er oprettet!");
+            Console.Write("Indtast pris: ");
+            double price = double.Parse(Console.ReadLine());
+
+            //Tjekker om input er i Enum, hvis ikke sættes den til default NA
+            Console.Write("Indtast spiltilstand (f.eks. Fine eller Perfect): ");
+            string conditionInput = Console.ReadLine();
+            Condition condition = Enum.TryParse(conditionInput, out Condition parsedCondition) ? parsedCondition : Condition.NA;
+
+            GameType newGameType = new GameType(gameName, gameDesc, minAge, minPlayers, maxPlayers, genre);
+            PseudoDatabase.gametypes.Add(newGameType);
+
+            Game newGame = new Game(PseudoDatabase.games.Count + 1, price, newGameType, condition);
+            PseudoDatabase.games.Add(newGame);
+
+            Console.WriteLine($"Spillet '{newGameType.Name}' er oprettet med succes og tilføjet til listen over spil!");
         }
 
-        public static void CreateRequest()
+
+        /*public static void CreateRequest()
         {
             Console.Write("Kundenavn: ");
             string customerName = Console.ReadLine();
@@ -108,7 +121,7 @@ namespace Genspil
             PseudoDatabase.requests.Add(newRequest);
             Console.WriteLine("\nForespørgsel oprettet:");
             Request.DisplayRequests();
-        }
+        }*/
     }
 }
 
