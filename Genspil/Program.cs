@@ -13,7 +13,7 @@
 
             Request.DisplayRequests();
 
-            Console.WriteLine("Press key to stop program");
+            Console.Write("Press key to stop program...");
             Console.ReadLine();
         }
     }
