@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35707.178
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Genspil", "Genspil\Genspil.csproj", "{7D0B6ADE-7349-4620-9605-DF4E07BF1CE3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Genspil.Test", "Genspil.Test\Genspil.Test.csproj", "{285A9D08-F878-4460-8186-AEDB780233D6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7D0B6ADE-7349-4620-9605-DF4E07BF1CE3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7D0B6ADE-7349-4620-9605-DF4E07BF1CE3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7D0B6ADE-7349-4620-9605-DF4E07BF1CE3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7D0B6ADE-7349-4620-9605-DF4E07BF1CE3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{285A9D08-F878-4460-8186-AEDB780233D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{285A9D08-F878-4460-8186-AEDB780233D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{285A9D08-F878-4460-8186-AEDB780233D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{285A9D08-F878-4460-8186-AEDB780233D6}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
