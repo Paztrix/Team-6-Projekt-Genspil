@@ -42,7 +42,7 @@ namespace Genspil.Test
             Assert.AreEqual(gameType, game.type);
         }
         /// <summary>
-        /// Tester om konstruktøren korrekt sætter en custom condition, når den angives eksplicit.
+        /// Tester om konstruktøren korrekt sætter en custom condition.
         /// </summary>
         [TestMethod]
         public void Game_Constructor_SetsCustomCondition()
