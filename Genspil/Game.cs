@@ -27,6 +27,11 @@ namespace Genspil
             }
         }
 
+        public void DisplayGame()
+        {
+            Console.WriteLine($"{type.Name} ({type.GameGenre}), {price} - from {type.MinPlayers}-{type.MaxPlayers}, minimum age {type.Age} ");
+        }
+
         public void Checkout() { }
     }
 }

@@ -42,5 +42,10 @@ namespace Genspil
                 Console.WriteLine($"ID: {request.ID}, Name: {request.Name}, Phone: {request.Phone}, Email: {request.Email}, Created On: {request.CreatedOn}, Requested {request._gameType.Name}");
             }
         }
+
+        public void DisplayRequest()
+        {
+            Console.WriteLine($"{_gameType.Name} - by {_name}, {_phone}, {_email} ");
+        }
     }
 }
