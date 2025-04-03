@@ -34,15 +34,7 @@ namespace Genspil
             this._gameType = gameType;
         }
 
-        //Display metode der printer alle requests
-        public static void DisplayRequests()
-        {
-            foreach (var request in PseudoDatabase.requests)
-            {
-                Console.WriteLine($"ID: {request.ID}, Name: {request.Name}, Phone: {request.Phone}, Email: {request.Email}, Created On: {request.CreatedOn}, Requested {request._gameType.Name}");
-            }
-        }
-
+        //Display metode der printer request
         public void DisplayRequest()
         {
             Console.WriteLine($"{_gameType.Name} - by {_name}, {_phone}, {_email} ");

@@ -8,10 +8,14 @@ namespace Genspil
 
             foreach (var game in PseudoDatabase.games)
             {
-                Console.WriteLine($"Name: {game.type.Name}, Price: {game.price}, Condition: {game.GameCondition}, Genre: {game.type.GameGenre}, Age: {game.type.Age}, Min Players: {game.type.MinPlayers}, Max Players: {game.type.MaxPlayers}, Description: {game.type.Description}");
+                game.DisplayGame();
             }
 
-            Request.DisplayRequests();
+            foreach (var request in PseudoDatabase.requests)
+            {
+                request.DisplayRequest();
+            }
+            
 
             ShowMenu();
 
@@ -39,18 +43,29 @@ namespace Genspil
                     case "1":
                         GameCreation();
                         break;
+
                     case "2":
                         //CreateRequest();
                         break;
+
                     case "3":
-                        Game.DisplayGames();
+                        foreach (var game in PseudoDatabase.games)
+                        {
+                            game.DisplayGame();
+                        }
                         break;
+
                     case "4":
-                        Request.DisplayRequests();
+                        foreach (var request in PseudoDatabase.requests)
+                        {
+                            request.DisplayRequest();
+                        }
                         break;
+
                     case "0":
                         Console.WriteLine("Afslutter programmet");
                         return;
+
                     default:
                         Console.WriteLine("Ugyldigt input, prøv igen.");
                         break;

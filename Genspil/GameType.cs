@@ -25,5 +25,10 @@ namespace Genspil
             this.MaxPlayers = maxPlayers;
             this.GameGenre = genre;
         }
+
+        public void DisplayGameType()
+        {
+            Console.WriteLine($"{Name} ({GameGenre}), {Description} - from {MinPlayers}-{MaxPlayers}, minimum age {Age} ");
+        }
     }
 }
