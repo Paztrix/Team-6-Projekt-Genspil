@@ -1,3 +1,5 @@
+using Genspil;
+
 namespace Genspil
 {
     internal class Program
@@ -6,34 +8,22 @@ namespace Genspil
         {
             PseudoDatabase.DatabaseSeeder();
 
-            foreach (var game in PseudoDatabase.games)
-            {
-                game.DisplayGame();
-            }
-
-            foreach (var request in PseudoDatabase.requests)
-            {
-                request.DisplayRequest();
-            }
-            
-
             ShowMenu();
-
-            Console.Write("Press key to stop program...");
-            Console.ReadLine();
         }
 
         public static void ShowMenu()
         {
             while (true)
             {
-                Console.WriteLine("\nVelkommen til menuen, du har følgende valg muligheder:");
+                Console.Clear();
+                Console.WriteLine("--- Genspil Lager System ---");
                 Console.WriteLine("1: Opret spil");
                 Console.WriteLine("2: Opret forespørgsel");
-                Console.WriteLine("3: Vis spil");
-                Console.WriteLine("4: Vis forespørgsler");
+                Console.WriteLine("3. Checkout");
+                Console.WriteLine("4: Vis spil");
+                Console.WriteLine("5: Vis forespørgsler");
                 Console.WriteLine("0: Afslutte program");
-                Console.Write("Dit valg: ");
+                Console.Write("Indtast valg: ");
 
                 string input = Console.ReadLine();
                 Console.WriteLine();
@@ -41,25 +31,51 @@ namespace Genspil
                 switch (input)
                 {
                     case "1":
+                        Console.Clear();
+                        Console.WriteLine("--- Opret Brætspil ---");
                         GameCreation();
+                        Console.Write("Tryk en vilkårlig tast for at vende tilbage til menuen...");
+                        Console.ReadKey();
                         break;
 
                     case "2":
-                        //CreateRequest();
+                        Console.Clear();
+                        Console.WriteLine("--- Opret Forespørgsel ---");
+                        CreateRequest();
+                        Console.Write("Tryk en vilkårlig tast for at vende tilbage til menuen...");
+                        Console.ReadKey();
                         break;
 
                     case "3":
-                        foreach (var game in PseudoDatabase.games)
-                        {
-                            game.DisplayGame();
-                        }
+                        Console.Clear();
+                        Console.WriteLine("--- Check Brætspil ud ---");
+                        Game.Checkout();
+                        Console.Write("Tryk en vilkårlig tast for at vende tilbage til menuen...");
+                        Console.ReadKey();
                         break;
 
                     case "4":
-                        foreach (var request in PseudoDatabase.requests)
+                        Console.Clear();
+                        Console.Write("Vil du sortere spilene? (1. Ja / 2. Nej): ");
+                        string sortInput = Console.ReadLine();
+                        if (sortInput == "1")
                         {
-                            request.DisplayRequest();
+                            Game.SortGames();
                         }
+                        Console.Clear();
+                        Console.WriteLine("--- Brætspil På Lager ---");
+                        Game.DisplayGame();
+                        //Game.DisplayGames();
+                        Console.Write("Tryk en vilkårlig tast for at vende tilbage til menuen...");
+                        Console.ReadKey();
+                        break;
+
+                    case "5":
+                        Console.Clear();
+                        Console.WriteLine("--- Forespørgsler ---");
+                        Request.DisplayRequests();
+                        Console.WriteLine("Tryk en vilkårlig tast for at vende tilbage til menuen...");
+                        Console.ReadKey();
                         break;
 
                     case "0":
@@ -78,23 +94,40 @@ namespace Genspil
             Console.Write("Indtast spillets navn: ");
             string gameName = Console.ReadLine();
 
-            Console.Write("Indtast beskrivelse: ");
-            string gameDesc = Console.ReadLine();
+            GameType existingGameType = PseudoDatabase.gametypes.FirstOrDefault(gt => gt.Name.Equals(gameName, StringComparison.OrdinalIgnoreCase));
+            GameType gameTypeToUse;
 
-            Console.Write("Indtast minimum alder: ");
-            int minAge = int.Parse(Console.ReadLine());
+            if (existingGameType != null)
+            {
+                Console.WriteLine($"Brætspillet {existingGameType.Name} findes allerede og bruges som skabelon.");
+                gameTypeToUse = existingGameType;
+            } else
+            {
+                Console.WriteLine($"Brætspillet {gameName} findes ikke, indtast venligst yderligere information for at oprette den.");
 
-            Console.Write("Indtast minimum spillere: ");
-            int minPlayers = int.Parse(Console.ReadLine());
+                Console.Write("Indtast beskrivelse: ");
+                string gameDesc = Console.ReadLine();
 
-            Console.Write("Indtast maksimum antal spillere: ");
-            int maxPlayers = int.Parse(Console.ReadLine());
+                Console.Write("Indtast minimum alder: ");
+                int minAge = int.Parse(Console.ReadLine());
 
-            //Tjekker om input er i Enum, hvis ikke sættes den til default NA
-            Console.Write("Indtast genre (f.eks. Campaign eller Familygame): ");
-            string genreInput = Console.ReadLine();
-            Genre genre = Enum.TryParse(genreInput, out Genre parsedGenre) ? parsedGenre : Genre.NA;
+                Console.Write("Indtast minimum spillere: ");
+                int minPlayers = int.Parse(Console.ReadLine());
 
+                Console.Write("Indtast maksimum antal spillere: ");
+                int maxPlayers = int.Parse(Console.ReadLine());
+
+                //Tjekker om input er i Enum, hvis ikke sættes den til default NA
+                Console.Write("Indtast genre (f.eks. Campaign eller Familygame): ");
+                string genreInput = Console.ReadLine();
+                Genre genre = Enum.TryParse(genreInput, out Genre parsedGenre) ? parsedGenre : Genre.NA;
+
+                //Opretter en ny GameType og tilføjer den til PseudoDatabase
+                gameTypeToUse = new GameType(gameName, gameDesc, minAge, minPlayers, maxPlayers, genre);
+                PseudoDatabase.gametypes.Add(gameTypeToUse);
+            }
+
+            //Spørg om pris og stand, ligemeget om GameType eksistere eller ej
             Console.Write("Indtast pris: ");
             double price = double.Parse(Console.ReadLine());
 
@@ -103,17 +136,15 @@ namespace Genspil
             string conditionInput = Console.ReadLine();
             Condition condition = Enum.TryParse(conditionInput, out Condition parsedCondition) ? parsedCondition : Condition.NA;
 
-            GameType newGameType = new GameType(gameName, gameDesc, minAge, minPlayers, maxPlayers, genre);
-            PseudoDatabase.gametypes.Add(newGameType);
-
-            Game newGame = new Game(PseudoDatabase.games.Count + 1, price, newGameType, condition);
+            //Opretter og tilføjer det nye spil og anvender GameType som blev bestemt før
+            Game newGame = new Game(PseudoDatabase.games.Count + 1, price, gameTypeToUse, condition);
             PseudoDatabase.games.Add(newGame);
 
-            Console.WriteLine($"Spillet '{newGameType.Name}' er oprettet med succes og tilføjet til listen over spil!");
+            Console.WriteLine($"Spillet '{gameTypeToUse.Name}' er oprettet med succes og tilføjet til listen over spil!");
         }
 
 
-        /*public static void CreateRequest()
+        static void CreateRequest()
         {
             Console.Write("Kundenavn: ");
             string customerName = Console.ReadLine();
@@ -134,9 +165,8 @@ namespace Genspil
 
             Request newRequest = new Request(id, requestDate, customerName, customerNumber, customerEmail, requestedGame);
             PseudoDatabase.requests.Add(newRequest);
-            Console.WriteLine("\nForespørgsel oprettet:");
-            Request.DisplayRequests();
-        }*/
+            Console.WriteLine($"\nForespørgsel oprettet: {newRequest}");
+        }
     }
 }
 

@@ -10,8 +10,8 @@ namespace Genspil
     {
         Perfect,
         Fine,
+        Unplayable,
         InWorkshop,
-        Unplayble,
         NA
     }
 }
