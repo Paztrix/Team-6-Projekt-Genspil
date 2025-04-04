@@ -24,9 +24,9 @@ namespace Genspil
             games.Add(new Game(id: 4, price: 20.00, gametype: gametypes[2], condition: Condition.Unplayable));
             games.Add(new Game(id: 5, price: 40.00, gametype: gametypes[2], condition: Condition.Perfect));
 
-            requests.Add(new Request(1, DateTime.Now.AddDays(-2), "John Doe", "1234567890", "johndoe@email.com", "Monopoly"));
-            requests.Add(new Request(2, DateTime.Now.AddDays(-1), "Jane Smith", "9876543210", "janesmith@email.com", "Jumanji"));
-            requests.Add(new Request(3, DateTime.Now, "Alice Johnson", "5551234567", "alicejohnson@email.com", "Ludo"));
+            requests.Add(new Request(1, DateTime.Now.AddDays(-2), "John Doe", "1234567890", "johndoe@email.com", "Skak"));
+            requests.Add(new Request(2, DateTime.Now.AddDays(-1), "Jane Smith", "9876543210", "janesmith@email.com", "Backgammon"));
+            requests.Add(new Request(3, DateTime.Now, "Alice Johnson", "5551234567", "alicejohnson@email.com", "UNO"));
 
         }
     }

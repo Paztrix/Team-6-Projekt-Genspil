@@ -78,7 +78,7 @@ namespace Genspil
             if (gameToCheckout != null)
             {
                 PseudoDatabase.games.Remove(gameToCheckout);
-                Console.WriteLine($"Spillet '{gameToCheckout.type.Name}' er nu tjekket ud og fjernet fra lageret.");
+                Console.WriteLine($"Spillet {gameToCheckout.type.Name} er nu tjekket ud og fjernet fra lageret.");
             }
             else
             {
@@ -91,7 +91,7 @@ namespace Genspil
             Console.WriteLine("--- Sortere Spil Efter ---");
             Console.WriteLine("1. Sorter efter navn");
             Console.WriteLine("2. Sorter efter stand");
-            Console.WriteLine("Indtast valg: ");
+            Console.Write("Indtast valg: ");
             string choice = Console.ReadLine();
 
             switch(choice)

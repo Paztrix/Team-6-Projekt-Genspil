@@ -94,6 +94,12 @@ namespace Genspil
             Console.Write("Indtast spillets navn: ");
             string gameName = Console.ReadLine();
 
+            Request checkRequests = PseudoDatabase.requests.FirstOrDefault(r => r.RequestedGame.Equals(gameName, StringComparison.OrdinalIgnoreCase));
+            if (checkRequests != null)
+            {
+                Console.WriteLine($"{gameName} er forespurgt af {checkRequests.Name}");
+            }
+
             GameType existingGameType = PseudoDatabase.gametypes.FirstOrDefault(gt => gt.Name.Equals(gameName, StringComparison.OrdinalIgnoreCase));
             GameType gameTypeToUse;
 
@@ -170,7 +176,7 @@ namespace Genspil
     }
 }
 
-/*
+/* Pseudokode til at oprette et nyt spil
 Method CreateNewGame():
     //spørg brugeren om spillets navn
     Display ( indtast spillets navn: )
