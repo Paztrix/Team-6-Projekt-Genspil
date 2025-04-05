@@ -27,31 +27,25 @@ namespace Genspil
 
                 string input = Console.ReadLine();
                 Console.WriteLine();
-
+      
                 switch (input)
                 {
                     case "1":
-                        Console.Clear();
-                        Console.WriteLine("--- Opret Brætspil ---");
+                        MenuTitle("Opret Brætspil");
                         GameCreation();
-                        Console.Write("Tryk en vilkårlig tast for at vende tilbage til menuen...");
-                        Console.ReadKey();
+                        PressAnyKey();
                         break;
 
-                    case "2":
-                        Console.Clear();
-                        Console.WriteLine("--- Opret Forespørgsel ---");
+                    case "2": 
+                        MenuTitle("Opret Forespørgsel");
                         CreateRequest();
-                        Console.Write("Tryk en vilkårlig tast for at vende tilbage til menuen...");
-                        Console.ReadKey();
+                        PressAnyKey();
                         break;
 
                     case "3":
-                        Console.Clear();
-                        Console.WriteLine("--- Check Brætspil ud ---");
+                        MenuTitle("Check Brætspil ud");
                         Game.Checkout();
-                        Console.Write("Tryk en vilkårlig tast for at vende tilbage til menuen...");
-                        Console.ReadKey();
+                        PressAnyKey();
                         break;
 
                     case "4":
@@ -62,20 +56,16 @@ namespace Genspil
                         {
                             Game.SortGames();
                         }
-                        Console.Clear();
-                        Console.WriteLine("--- Brætspil På Lager ---");
-                        Game.DisplayGame();
+                        MenuTitle("Brætspil På Lager");
+                        Game.DisplayGames();
                         //Game.DisplayGames();
-                        Console.Write("Tryk en vilkårlig tast for at vende tilbage til menuen...");
-                        Console.ReadKey();
+                        PressAnyKey();
                         break;
 
                     case "5":
-                        Console.Clear();
-                        Console.WriteLine("--- Forespørgsler ---");
+                        MenuTitle("Forespørgsler");
                         Request.DisplayRequests();
-                        Console.WriteLine("Tryk en vilkårlig tast for at vende tilbage til menuen...");
-                        Console.ReadKey();
+                        PressAnyKey();
                         break;
 
                     case "0":
@@ -173,6 +163,18 @@ namespace Genspil
             PseudoDatabase.requests.Add(newRequest);
             Console.WriteLine($"\nForespørgsel oprettet: {newRequest}");
         }
+
+        public static void PressAnyKey()
+        {
+            Console.Write("Tryk en vilkårlig tast for at vende tilbage til menuen...");
+            Console.ReadKey();
+        }
+
+        public static void MenuTitle(string title)
+        {
+            Console.Clear();
+            Console.WriteLine($"--- {title} ---");
+        }
     }
 }
 
@@ -206,3 +208,5 @@ Method CreateNewGame():
 
     return newGame
 */
+
+
