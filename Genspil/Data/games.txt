@@ -1,0 +1,8 @@
+2;75;Jumanji;Perfect
+3;99;Monopoly;InWorkshop
+4;20;Ludo;Unplayable
+5;40;Ludo;Perfect
+6;99;Laban;Perfect
+7;99;Laban;Perfect
+8;99;Bingo;Perfect
+10;99;Jumanji;Fine

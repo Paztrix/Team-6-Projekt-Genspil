@@ -1,4 +1,5 @@
 using Genspil;
+using System.Linq;
 
 namespace Genspil
 {
@@ -6,65 +7,70 @@ namespace Genspil
     {
         static void Main(string[] args)
         {
-            PseudoDatabase.DatabaseSeeder();
+            List<GameDescription> gameDescriptions = DataHandler.LoadGameDescriptions();
+            List<Game> games = DataHandler.LoadGames(gameDescriptions);
+            List<Request> requests = DataHandler.LoadRequests();
 
-            ShowMenu();
+            ShowMenu(games, gameDescriptions, requests);
         }
 
-        public static void ShowMenu()
+        public static void ShowMenu(List<Game> games, List<GameDescription> gameDescriptions, List<Request> requests)
         {
             while (true)
             {
                 Console.Clear();
                 Console.WriteLine("--- Genspil Lager System ---");
-                Console.WriteLine("1: Opret spil");
-                Console.WriteLine("2: Opret forespørgsel");
-                Console.WriteLine("3. Checkout");
-                Console.WriteLine("4: Vis spil");
-                Console.WriteLine("5: Vis forespørgsler");
+                Console.WriteLine("1: Opret brætspil");
+                Console.WriteLine("2. Checkout af brætspil");
+                Console.WriteLine("3: Opret forespørgsel");
+                Console.WriteLine("4: Fjern forespørgsel");
+                Console.WriteLine("5: Vis spil");
+                Console.WriteLine("6: Vis forespørgsler");
                 Console.WriteLine("0: Afslutte program");
                 Console.Write("Indtast valg: ");
 
                 string input = Console.ReadLine();
                 Console.WriteLine();
-      
+
                 switch (input)
                 {
                     case "1":
-                        MenuTitle("Opret Brætspil");
-                        GameCreation();
+                        MenuTitle("Opret brætspil");
+                        Game newGame = GameCreation(gameDescriptions, games, requests);
+                        games.Add(newGame);
+                        DataHandler.SaveGames(games);
                         PressAnyKey();
                         break;
 
-                    case "2": 
-                        MenuTitle("Opret Forespørgsel");
-                        CreateRequest();
+                    case "2":
+                        MenuTitle("Checkout af brætspil");
+                        CheckoutGame(games);
                         PressAnyKey();
                         break;
 
                     case "3":
-                        MenuTitle("Check Brætspil ud");
-                        Game.Checkout();
+                        MenuTitle("Opret forespørgsel");
+                        Request newRequest = CreateRequest(requests);
+                        requests.Add(newRequest);
+                        DataHandler.SaveRequests(requests);
                         PressAnyKey();
                         break;
 
                     case "4":
-                        Console.Clear();
-                        Console.Write("Vil du sortere spilene? (1. Ja / 2. Nej): ");
-                        string sortInput = Console.ReadLine();
-                        if (sortInput == "1")
-                        {
-                            Game.SortGames();
-                        }
-                        MenuTitle("Brætspil På Lager");
-                        Game.DisplayGames();
-                        //Game.DisplayGames();
+                        MenuTitle("Fjern forespørgsel");
+                        RemoveRequest(requests);
                         PressAnyKey();
                         break;
 
                     case "5":
+                        MenuTitle("Brætspil på lager");
+                        Game.DisplayGames(games);
+                        PressAnyKey();
+                        break;
+
+                    case "6":
                         MenuTitle("Forespørgsler");
-                        Request.DisplayRequests();
+                        Request.DisplayRequests(requests);
                         PressAnyKey();
                         break;
 
@@ -73,110 +79,180 @@ namespace Genspil
                         return;
 
                     default:
-                        Console.WriteLine("Ugyldigt input, prøv igen.");
+                        Console.WriteLine("Ugyldigt valg");
+                        PressAnyKey();
                         break;
                 }
             }
         }
 
-        static void GameCreation()
+        public static Game GameCreation(List<GameDescription> gameDescriptions, List<Game> games, List<Request> requests)
         {
-            Console.Write("Indtast spillets navn: ");
+            Console.Write("Navn på spil: ");
             string gameName = Console.ReadLine();
 
-            Request checkRequests = PseudoDatabase.requests.FirstOrDefault(r => r.RequestedGame.Equals(gameName, StringComparison.OrdinalIgnoreCase));
-            if (checkRequests != null)
+            var matchingRequests = requests
+                .Where(r => r.RequestedGame.Equals(gameName, StringComparison.OrdinalIgnoreCase))
+                .ToList();
+
+            if (matchingRequests.Any())
             {
-                Console.WriteLine($"{gameName} er forespurgt af {checkRequests.Name}");
+                Console.WriteLine($"{gameName} har {matchingRequests.Count} {(matchingRequests.Count == 1 ? "forespørgsel" : "forespørgsler")}.");
             }
 
-            GameType existingGameType = PseudoDatabase.gametypes.FirstOrDefault(gt => gt.Name.Equals(gameName, StringComparison.OrdinalIgnoreCase));
-            GameType gameTypeToUse;
+            GameDescription existingGameType = gameDescriptions
+                .FirstOrDefault(gt => gt.Name.Equals(gameName, StringComparison.OrdinalIgnoreCase));
+            GameDescription gameTypeToUse;
 
             if (existingGameType != null)
             {
-                Console.WriteLine($"Brætspillet {existingGameType.Name} findes allerede og bruges som skabelon.");
                 gameTypeToUse = existingGameType;
-            } else
+            }
+            else
             {
-                Console.WriteLine($"Brætspillet {gameName} findes ikke, indtast venligst yderligere information for at oprette den.");
-
-                Console.Write("Indtast beskrivelse: ");
+                Console.Write("Beskrivelse: ");
                 string gameDesc = Console.ReadLine();
-
-                Console.Write("Indtast minimum alder: ");
+                Console.Write("Min. alder: ");
                 int minAge = int.Parse(Console.ReadLine());
-
-                Console.Write("Indtast minimum spillere: ");
+                Console.Write("Min. spillere: ");
                 int minPlayers = int.Parse(Console.ReadLine());
-
-                Console.Write("Indtast maksimum antal spillere: ");
+                Console.Write("Max. spillere: ");
                 int maxPlayers = int.Parse(Console.ReadLine());
-
-                //Tjekker om input er i Enum, hvis ikke sættes den til default NA
-                Console.Write("Indtast genre (f.eks. Campaign eller Familygame): ");
+                Console.Write("Genre: ");
                 string genreInput = Console.ReadLine();
                 Genre genre = Enum.TryParse(genreInput, out Genre parsedGenre) ? parsedGenre : Genre.NA;
 
-                //Opretter en ny GameType og tilføjer den til PseudoDatabase
-                gameTypeToUse = new GameType(gameName, gameDesc, minAge, minPlayers, maxPlayers, genre);
-                PseudoDatabase.gametypes.Add(gameTypeToUse);
+                // Opretter en ny GameDescription og tilføjer den til listen
+                gameTypeToUse = new GameDescription(gameName, gameDesc, minAge, minPlayers, maxPlayers, genre);
+                gameDescriptions.Add(gameTypeToUse);
+                DataHandler.SaveGameDescriptions(gameDescriptions);
             }
 
-            //Spørg om pris og stand, ligemeget om GameType eksistere eller ej
+            // Spørg om pris og stand, ligemeget om GameDescription eksisterer eller ej
             Console.Write("Indtast pris: ");
             double price = double.Parse(Console.ReadLine());
 
-            //Tjekker om input er i Enum, hvis ikke sættes den til default NA
-            Console.Write("Indtast spiltilstand (f.eks. Fine eller Perfect): ");
+            Console.Write("Indtast stand (Perfect, Fine, InWorkshop, Unplayable): ");
             string conditionInput = Console.ReadLine();
-            Condition condition = Enum.TryParse(conditionInput, out Condition parsedCondition) ? parsedCondition : Condition.NA;
+            Condition condition = Enum.Parse<Condition>(conditionInput);
 
-            //Opretter og tilføjer det nye spil og anvender GameType som blev bestemt før
-            Game newGame = new Game(PseudoDatabase.games.Count + 1, price, gameTypeToUse, condition);
-            PseudoDatabase.games.Add(newGame);
+            int nextId = games.Count > 0 ? games.Max(g => g.Id) + 1 : 1;
 
-            Console.WriteLine($"Spillet '{gameTypeToUse.Name}' er oprettet med succes og tilføjet til listen over spil!");
+            return new Game(nextId, price, gameTypeToUse, condition);
         }
 
-
-        static void CreateRequest()
+        public static void CheckoutGame(List<Game> games)
         {
-            Console.Write("Kundenavn: ");
-            string customerName = Console.ReadLine();
+            Console.Write("Søg efter spilnavn: ");
+            string search = Console.ReadLine()?.Trim().ToLower();
 
-            Console.Write("Telefon: ");
-            string customerNumber = Console.ReadLine();
+            var matchingGames = games
+                .Where(g => g.type.Name.ToLower().Contains(search))
+                .ToList();
+
+            if (matchingGames.Count == 0)
+            {
+                Console.WriteLine("Ingen spil matcher søgningen.");
+                return;
+            }
+
+            Console.WriteLine("\nFundne spil:");
+            Console.WriteLine($"{"Nr.",-5} {"Navn",-20} {"Pris",-10} {"Stand",-12} {"ID",-5}");
+            Console.WriteLine(new string('-', 55));
+
+            for (int i = 0; i < matchingGames.Count; i++)
+            {
+                var g = matchingGames[i];
+                Console.WriteLine($"{i,-5} {g.type.Name,-20} {g.price,-10:F2} {g.GameCondition,-12} {g.Id,-5}");
+            }
+
+            Console.Write("\nIndtast nummer på spil du vil checkout: ");
+            if (int.TryParse(Console.ReadLine(), out int index) && index >= 0 && index < matchingGames.Count)
+            {
+                Game selectedGame = matchingGames[index];
+                games.Remove(selectedGame);
+                DataHandler.SaveGames(games);
+                Console.WriteLine($"\n'{selectedGame.type.Name}' er nu fjernet fra lageret.");
+            }
+            else
+            {
+                Console.WriteLine("Ugyldigt valg.");
+            }
+        }
+
+        public static Request CreateRequest(List<Request> requests)
+        {
+            Console.Write("Navn: ");
+            string name = Console.ReadLine();
+
+            Console.Write("Telefonnummer: ");
+            string phone = Console.ReadLine();
 
             Console.Write("Email: ");
-            string customerEmail = Console.ReadLine();
+            string email = Console.ReadLine();
 
-            Console.Write("Brætspil: ");
+            Console.Write("Ønsket spil: ");
             string requestedGame = Console.ReadLine();
 
-            DateTime requestDate = DateTime.Now;
+            int newId = requests.Count > 0 ? requests.Max(r => r.ID) + 1 : 1;
+            DateTime createdOn = DateTime.Now;
 
-            Random random = new Random();
-            int id = random.Next();
-
-            Request newRequest = new Request(id, requestDate, customerName, customerNumber, customerEmail, requestedGame);
-            PseudoDatabase.requests.Add(newRequest);
-            Console.WriteLine($"\nForespørgsel oprettet: {newRequest}");
+            return new Request(newId, createdOn, name, phone, email, requestedGame);
         }
 
-        public static void PressAnyKey()
+        public static void RemoveRequest(List<Request> requests)
         {
-            Console.Write("Tryk en vilkårlig tast for at vende tilbage til menuen...");
-            Console.ReadKey();
+            Console.Write("Søg efter navn: ");
+            string search = Console.ReadLine()?.Trim().ToLower();
+
+            var matchingRequests = requests
+                .Where(r => r.Name.ToLower().Contains(search))
+                .ToList();
+
+            if (matchingRequests.Count == 0)
+            {
+                Console.WriteLine("Ingen forespørgsler matcher søgningen.");
+                return;
+            }
+
+            Console.WriteLine("\nFundne forespørgsler:");
+            Console.WriteLine($"{"Nr.",-5} {"Navn",-20} {"Email",-25} {"Spil",-20}");
+            Console.WriteLine(new string('-', 75));
+
+            for (int i = 0; i < matchingRequests.Count; i++)
+            {
+                var r = matchingRequests[i];
+                Console.WriteLine($"{i,-5} {r.Name,-20} {r.Email,-25} {r.RequestedGame,-20}");
+            }
+
+            Console.Write("\nIndtast nummer på forespørgsel du vil fjerne: ");
+            if (int.TryParse(Console.ReadLine(), out int index) && index >= 0 && index < matchingRequests.Count)
+            {
+                var removed = matchingRequests[index];
+                requests.Remove(removed);
+                DataHandler.SaveRequests(requests);
+                Console.WriteLine($"\nForespørgslen fra '{removed.Name}' om spillet '{removed.RequestedGame}' er nu fjernet.");
+            }
+            else
+            {
+                Console.WriteLine("Ugyldigt valg.");
+            }
         }
 
         public static void MenuTitle(string title)
         {
             Console.Clear();
-            Console.WriteLine($"--- {title} ---");
+            Console.WriteLine("---- " + title + " ----");
+        }
+
+        public static void PressAnyKey()
+        {
+            Console.WriteLine("\nTryk en vilkårlig tast for at fortsætte...");
+            Console.ReadKey();
         }
     }
 }
+
 
 /* Pseudokode til at oprette et nyt spil
 Method CreateNewGame():
@@ -200,8 +276,8 @@ Method CreateNewGame():
     Display ( indtast maksimum antal spillere: )
     maxPlayers = userData()
 
-    //Opret ny instans af GameType med de indtastede oplysninger
-    newGame = new GameType(gameName, gameDesc, minAge, minPlayers, maxPlayers)
+    //Opret ny instans af GameDescription med de indtastede oplysninger
+    newGame = new GameDescription(gameName, gameDesc, minAge, minPlayers, maxPlayers)
 
     //bekræft spillet er oprettet
     Display ( Spillet {gameName} er oprettet)

@@ -1,0 +1,6 @@
+1;01-04-2024 10:15:00;John Doe;12345678;john@example.com;Skak
+2;02-04-2024 14:32:00;Jane Smith;98765432;jane@example.com;Backgammon
+3;03-04-2024 09:45:00;Alice Johnson;00000000;alice@example.com;UNO
+4;06-04-2025 15:52:15;Thomas;12345678;thomas@thomas.dk;Jumanji
+5;06-04-2025 16:07:44;Peter;22323223;peter@peter.dk;Jumanji
+6;06-04-2025 22:53:54;Thomas;12345668;thomas@email.dk;Jumanji
