@@ -6,3 +6,4 @@
 7;99;Laban;Perfect
 8;99;Bingo;Perfect
 10;99;Jumanji;Fine
+11;99;Kosmos Settlers;Unplayable
