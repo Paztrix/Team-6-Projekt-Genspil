@@ -22,12 +22,13 @@ namespace Genspil
                 Console.WriteLine("3. Checkout");
                 Console.WriteLine("4: Vis spil");
                 Console.WriteLine("5: Vis forespørgsler");
+                Console.WriteLine("6: Søg efter spil");
                 Console.WriteLine("0: Afslutte program");
                 Console.Write("Indtast valg: ");
 
                 string input = Console.ReadLine();
                 Console.WriteLine();
-      
+
                 switch (input)
                 {
                     case "1":
@@ -36,7 +37,7 @@ namespace Genspil
                         PressAnyKey();
                         break;
 
-                    case "2": 
+                    case "2":
                         MenuTitle("Opret Forespørgsel");
                         CreateRequest();
                         PressAnyKey();
@@ -57,7 +58,7 @@ namespace Genspil
                             Game.SortGames();
                         }
                         MenuTitle("Brætspil På Lager");
-                        Game.DisplayGames();
+                        Game.DisplayGame();
                         //Game.DisplayGames();
                         PressAnyKey();
                         break;
@@ -65,6 +66,12 @@ namespace Genspil
                     case "5":
                         MenuTitle("Forespørgsler");
                         Request.DisplayRequests();
+                        PressAnyKey();
+                        break;
+
+                    case "6":
+                        MenuTitle("Søg efter spil");
+                        SearchGame();
                         PressAnyKey();
                         break;
 
@@ -78,6 +85,12 @@ namespace Genspil
                 }
             }
         }
+
+
+
+
+
+
 
         static void GameCreation()
         {
@@ -140,31 +153,106 @@ namespace Genspil
         }
 
 
+
         static void CreateRequest()
+                    {
+                        Console.Write("Kundenavn: ");
+                        string customerName = Console.ReadLine();
+
+                        Console.Write("Telefon: ");
+                        string customerNumber = Console.ReadLine();
+
+                        Console.Write("Email: ");
+                        string customerEmail = Console.ReadLine();
+
+                        Console.Write("Brætspil: ");
+                        string requestedGame = Console.ReadLine();
+
+                        DateTime requestDate = DateTime.Now;
+
+                        Random random = new Random();
+                        int id = random.Next();
+
+                        Request newRequest = new Request(id, requestDate, customerName, customerNumber, customerEmail, requestedGame);
+                        PseudoDatabase.requests.Add(newRequest);
+                        Console.WriteLine($"\nForespørgsel oprettet: {newRequest}");
+                    }
+                }
+            }
+        }
+                     
+//Search for a game
+        static void SearchGame()
+{
+    Console.WriteLine("For at søge på et spil, indtast spillets navn: ");
+    string gameName = Console.ReadLine();
+
+    // Check if game exists in PseudoDatabase
+    GameType existingGameType = PseudoDatabase.gametypes
+        .FirstOrDefault(gt => gt.Name.Equals(gameName, StringComparison.OrdinalIgnoreCase));
+
+    if (existingGameType != null)
+    {
+        Console.WriteLine($"{gameName} findes.");
+        Console.WriteLine("Tast 1 for spillets beskrivelse, tast 2 for at vende tilbage til menuen: ");
+
+        int choice;
+        while (!int.TryParse(Console.ReadLine(), out choice) || (choice != 1 && choice != 2))
         {
-            Console.Write("Kundenavn: ");
-            string customerName = Console.ReadLine();
-
-            Console.Write("Telefon: ");
-            string customerNumber = Console.ReadLine();
-
-            Console.Write("Email: ");
-            string customerEmail = Console.ReadLine();
-
-            Console.Write("Brætspil: ");
-            string requestedGame = Console.ReadLine();
-
-            DateTime requestDate = DateTime.Now;
-
-            Random random = new Random();
-            int id = random.Next();
-
-            Request newRequest = new Request(id, requestDate, customerName, customerNumber, customerEmail, requestedGame);
-            PseudoDatabase.requests.Add(newRequest);
-            Console.WriteLine($"\nForespørgsel oprettet: {newRequest}");
+            Console.WriteLine("Tast enten 1 eller 2:");
         }
 
-        public static void PressAnyKey()
+        if (choice == 1)
+        {
+            Console.WriteLine("Du valgte beskrivelse:");
+            DisplayGameType();
+        }
+        else
+        {
+            ShowMenu();
+        }
+    }
+    else
+    {
+        Console.WriteLine("Spillet findes ikke.");
+        Console.WriteLine("Prøv at indtaste spillets ID:");
+
+        if (int.TryParse(Console.ReadLine(), out int id))
+        {
+            Console.WriteLine($"Du indtastede ID {id}");
+
+            if (games.Any(game => game.Id == id))
+            {
+                Console.WriteLine("Spillet er fundet med det angivne ID.");
+            }
+            else
+            {
+                Console.WriteLine("Ugyldigt ID.");
+            }
+
+            Console.WriteLine("Tast 1 for spillets beskrivelse, tast 2 for at vende tilbage til menuen:");
+            int choice;
+            while (!int.TryParse(Console.ReadLine(), out choice) || (choice != 1 && choice != 2))
+            {
+                Console.WriteLine("Tast enten 1 eller 2:");
+            }
+
+            if (choice == 1)
+            {
+                DisplayGameType();
+            }
+            else
+            {
+                ShowMenu();
+            }
+        }
+        else
+        {
+            Console.WriteLine("Ugyldigt input. Kun tal accepteres som ID.");
+        }
+    }
+}
+public static void PressAnyKey()
         {
             Console.Write("Tryk en vilkårlig tast for at vende tilbage til menuen...");
             Console.ReadKey();
@@ -175,7 +263,7 @@ namespace Genspil
             Console.Clear();
             Console.WriteLine($"--- {title} ---");
         }
-    }
+    
 }
 
 /* Pseudokode til at oprette et nyt spil
