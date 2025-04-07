@@ -141,9 +141,11 @@ namespace Genspil
 
             Console.Write("Indtast stand (Perfect, Fine, InWorkshop, Unplayable): ");
             string conditionInput = Console.ReadLine();
-            Condition condition = Enum.Parse<Condition>(conditionInput);
+            Condition condition = Enum.TryParse(conditionInput, out Condition parsedCondition) ? parsedCondition : Condition.NA;
 
             int nextId = games.Count > 0 ? games.Max(g => g.Id) + 1 : 1;
+
+            Console.WriteLine($"Spillet '{gameTypeToUse.Name}' er oprettet med succes og tilføjet til listen over spil!");
 
             return new Game(nextId, price, gameTypeToUse, condition);
         }

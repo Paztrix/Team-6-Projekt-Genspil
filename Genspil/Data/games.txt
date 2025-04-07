@@ -7,3 +7,4 @@
 8;99;Bingo;Perfect
 10;99;Jumanji;Fine
 11;99;Kosmos Settlers;Unplayable
+12;99;Matador;NA
