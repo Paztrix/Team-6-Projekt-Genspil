@@ -9,9 +9,11 @@ namespace Genspil
         private int id;
         public double price { get; private set; }
         public Condition GameCondition { get; private set; }
-        public GameType type { get; private set; }
+        public GameDescription type { get; private set; }
+        // Offentlig read-only property. Viser spillets interne ID, til identifikation og persistens:
+        public int Id => id;
 
-        public Game(int id, double price, GameType gametype, Condition condition = Condition.Perfect)
+        public Game(int id, double price, GameDescription gametype, Condition condition = Condition.Perfect)
         {
             this.id = id;
             this.price = price;
@@ -29,27 +31,52 @@ namespace Genspil
         //}
 
         //Display metode der printer spil
-        public static void DisplayGame()
+        public override string ToString()
         {
-            //Definere hver kolonnes bredde: Brætspil | Genre | Pris | Antal Spillere (Min-Max) | Alder | Stand |
+            return $"{id};{price};{type.Name};{GameCondition}";
+        }
+
+        public static Game FromString(string line, List<GameDescription> descriptions)
+        {
+            var parts = line.Split(';');
+            int id = int.Parse(parts[0]);
+            double price = double.Parse(parts[1]);
+            string gameTypeName = parts[2];
+            Condition condition = Enum.Parse<Condition>(parts[3]);
+
+            var description = descriptions.FirstOrDefault(d => d.Name == gameTypeName)
+                ?? throw new Exception($"GameDescription '{gameTypeName}' not found.");
+
+            return new Game(id, price, description, condition);
+        }
+        public static void DisplayGames(List<Game> games)
+        {
+            // Definerer hver kolonnes bredde
             int col1Width = 12, col2Width = 10, col3Width = 8, col4Width = 15, col5Width = 5, col6Width = 10;
 
-            //Beregner den totale bredde for seperator linjen
+            // Beregner den totale bredde for separatorlinjen
             int totalWidth = col1Width + col2Width + col3Width + col4Width + col5Width + col6Width + 19;
             string separator = new string('-', totalWidth);
 
-            //Printer en header
+            // Printer header
             Console.WriteLine(separator);
             Console.WriteLine($"| {"Brætspil".PadRight(col1Width)} | {"Genre".PadRight(col2Width)} | {"Pris".PadRight(col3Width)} | {"Antal Spillere".PadRight(col4Width)} | {"Alder".PadRight(col5Width)} | {"Stand".PadRight(col6Width)} |");
             Console.WriteLine(separator);
 
-            //Itererer gennem alle spil og printer
-            foreach (var game in PseudoDatabase.games)
+            // Udskriv hvert spil i tabelformat
+            foreach (var game in games)
             {
-                string playerRange = $"{game.type.MinPlayers}-{game.type.MaxPlayers}";
-                Console.WriteLine($"| {game.type.Name.PadRight(col1Width)} | {game.type.GameGenre.ToString().PadRight(col2Width)} | {game.price.ToString().PadRight(col3Width)} | {playerRange.PadRight(col4Width)} | {game.type.Age.ToString().PadRight(col5Width)} | {game.GameCondition.ToString().PadRight(col6Width)} |");
-                Console.WriteLine(separator);
+                string name = game.type.Name.PadRight(col1Width);
+                string genre = game.type.GameGenre.ToString().PadRight(col2Width);
+                string price = game.price.ToString("F2").PadRight(col3Width);
+                string players = $"{game.type.MinPlayers}-{game.type.MaxPlayers}".PadRight(col4Width);
+                string age = game.type.MinAge.ToString().PadRight(col5Width);
+                string condition = game.GameCondition.ToString().PadRight(col6Width);
+
+                Console.WriteLine($"| {name} | {genre} | {price} | {players} | {age} | {condition} |");
             }
+
+            Console.WriteLine(separator);
         }
 
         //Checkout metode til at fjerne spil

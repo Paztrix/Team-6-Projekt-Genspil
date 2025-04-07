@@ -1,0 +1,6 @@
+Jumanji;Farligt spil i junglen;12;3;9;Campaign
+Monopoly;;8;4;6;Familygame
+Ludo;;4;2;4;Familygame
+Laban;;4;2;6;Familygame
+Bingo;Sjovt spil;4;6;8;NA
+Kosmos Settlers;Sjovt brætspil med lang beskrivelse;5;4;8;Familygame

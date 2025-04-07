@@ -35,21 +35,38 @@ namespace Genspil
             Email = email;
             RequestedGame = requestedGame;
         }
+        public override string ToString()
+        {
+            return $"{ID};{CreatedOn};{Name};{Phone};{Email};{RequestedGame}";
+        }
+
+        public static Request FromString(string line)
+        {
+            var parts = line.Split(';');
+            return new Request(
+                int.Parse(parts[0]),                     // ID
+                DateTime.Parse(parts[1]),                // CreatedOn
+                parts[2],                                // Name
+                parts[3],                                // Phone
+                parts[4],                                // Email
+                parts[5]                                 // RequestedGame
+            );
+        }
 
         //Display metode der printer request
-        public static void DisplayRequests()
+        public static void DisplayRequests(List<Request> requests)
         {
-            //Definere hver kolonnes bredde: Brætspil | Kundenavn | Telefon | Email |
+            // Definere hver kolonnes bredde: Brætspil | Kundenavn | Telefon | Email |
             int col1Width = 12, col2Width = 17, col3Width = 10, col4Width = 25;
             string separator = new string('-', col1Width + col2Width + col3Width + col4Width + 13);
 
-            //Printer en header
+            // Printer en header
             Console.WriteLine(separator);
             Console.WriteLine($"| {"Brætspil".PadRight(col1Width)} | {"Kundenavn".PadRight(col2Width)} | {"Telefon".PadRight(col3Width)} | {"Email".PadRight(col4Width)} |");
             Console.WriteLine(separator);
 
-            //Itererer gennem alle forespørgsler og printer
-            foreach (var request in PseudoDatabase.requests)
+            // Itererer gennem alle forespørgsler og printer
+            foreach (var request in requests)
             {
                 Console.WriteLine($"| {request.RequestedGame.PadRight(col1Width)} | {request.Name.PadRight(col2Width)} | {request.Phone.PadRight(col3Width)} | {request.Email.PadRight(col4Width)} |");
                 Console.WriteLine(separator);

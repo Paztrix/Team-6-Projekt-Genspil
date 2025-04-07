@@ -16,7 +16,7 @@ namespace Genspil.Test
         public void Game_Constructor_SetsDefaultCondition_WhenNotProvided()
         {
             // Arrange
-            var gameType = new GameType("Uno", "Card game", 7, 2, 10);
+            var gameType = new GameDescription("Uno", "Card game", 7, 2, 10);
 
             // Act
             var game = new Game(4, 49.95, gameType); // ingen condition angivet
@@ -31,7 +31,7 @@ namespace Genspil.Test
         public void Game_Constructor_SetsPropertiesCorrectly()
         {
             // Arrange
-            var gameType = new GameType("Catan", "A classic game", 10, 3, 4);
+            var gameType = new GameDescription("Catan", "A classic game", 10, 3, 4);
 
             // Act
             var game = new Game(1, 299.95, gameType);
@@ -48,7 +48,7 @@ namespace Genspil.Test
         public void Game_Constructor_SetsCustomCondition()
         {
             // Arrange
-            var gameType = new GameType("Risk", "Global domination", 12, 2, 6);
+            var gameType = new GameDescription("Risk", "Global domination", 12, 2, 6);
 
             // Act
             var game = new Game(2, 199.95, gameType, Condition.InWorkshop);
@@ -64,15 +64,16 @@ namespace Genspil.Test
         public void DisplayGames_PrintsExpectedOutput()
         {
             // Arrange
-            var gameType = new GameType("Chess", "Classic game", 6, 2, 2);
+            var gameType = new GameDescription("Chess", "Classic game", 6, 2, 2, Genre.Familygame);
             var game = new Game(3, 100.00, gameType);
-            PseudoDatabase.games = new List<Game> { game };
+
+            var games = new List<Game> { game };
 
             using var sw = new StringWriter();
             Console.SetOut(sw);
 
             // Act
-            Game.DisplayGames();
+            Game.DisplayGames(games);
 
             // Assert
             var output = sw.ToString();
