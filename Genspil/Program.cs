@@ -315,5 +315,3 @@ Method CreateNewGame():
 
     return newGame
 */
-
-
