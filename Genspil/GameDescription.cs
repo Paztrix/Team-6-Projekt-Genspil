@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.PortableExecutable;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace Genspil
@@ -46,41 +49,48 @@ namespace Genspil
 
         public static void DisplayGameDescription(List<GameDescription> gameDescriptions)
         {
-            //Console.WriteLine($"{Name} ({GameGenre}), {Description} - from {MinPlayers}-{MaxPlayers}, minimum age {MinAge} ");
+            List<Game> games = DataHandler.LoadGames(gameDescriptions);
+            List<Request> requests = DataHandler.LoadRequests();
 
-
-        }
-
-        /*
-        public static void DisplayGames(List<Game> games)
-        {
             // Definerer hver kolonnes bredde
-            int col1Width = 16, col2Width = 10, col3Width = 8, col4Width = 15, col5Width = 5, col6Width = 10;
+            int col1Width = 16, col2Width = 10, col3Width = 15, col4Width = 15;
 
             // Beregner den totale bredde for separatorlinjen
-            int totalWidth = col1Width + col2Width + col3Width + col4Width + col5Width + col6Width + 19;
+            int totalWidth = col1Width + col2Width + col3Width + col4Width + 19;
             string separator = new string('-', totalWidth);
 
             // Printer header
             Console.WriteLine(separator);
-            Console.WriteLine($"| {"Brætspil".PadRight(col1Width)} | {"Genre".PadRight(col2Width)} | {"Pris".PadRight(col3Width)} | {"Antal Spillere".PadRight(col4Width)} | {"Alder".PadRight(col5Width)} | {"Stand".PadRight(col6Width)} |");
+            Console.WriteLine($"| {"Brætspil".PadRight(col1Width)} | {"Genre".PadRight(col2Width)} | {"Antal på lager".PadRight(col3Width)} | {"Forespørgsler".PadRight(col4Width)} |");
             Console.WriteLine(separator);
 
-            // Udskriv hvert spil i tabelformat
-            foreach (var game in games)
+
+            foreach (var gt in gameDescriptions)
             {
-                string name = game.type.Name.PadRight(col1Width);
-                string genre = game.type.GameGenre.ToString().PadRight(col2Width);
-                string price = game.price.ToString("F2").PadRight(col3Width);
-                string players = $"{game.type.MinPlayers}-{game.type.MaxPlayers}".PadRight(col4Width);
-                string age = game.type.MinAge.ToString().PadRight(col5Width);
-                string condition = game.GameCondition.ToString().PadRight(col6Width);
+                int gameCount = 0;
+                foreach (Game game in games) 
+                {
+                    if (gt == game.type) gameCount++;    
+                }
 
-                Console.WriteLine($"| {name} | {genre} | {price} | {players} | {age} | {condition} |");
+                int reqCount = 0;
+                foreach (Request request in requests)
+                {
+                    if (gt.Name == request.RequestedGame) reqCount++;
+                }
+
+
+                string name = gt.Name.PadRight(col1Width);
+                string genre = gt.GameGenre.ToString().PadRight(col2Width);
+                string gameCountFormated = gameCount.ToString().PadRight(col3Width);
+                string ReqCountFormated = reqCount.ToString().PadRight(col4Width);
+
+                Console.WriteLine($"| {name} | {genre} | {gameCountFormated} | {ReqCountFormated} |");
             }
-
             Console.WriteLine(separator);
+
         }
-        */
+
+      
     }
 }
