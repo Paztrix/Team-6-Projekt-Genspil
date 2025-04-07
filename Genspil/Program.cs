@@ -1,4 +1,5 @@
 using Genspil;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.AccessControl;
 
@@ -28,6 +29,7 @@ namespace Genspil
                 Console.WriteLine("5: Vis spil");
                 Console.WriteLine("6: Vis forespørgsler");
                 Console.WriteLine("7: Søg efter spil");
+                Console.WriteLine("8. Lagerliste");
                 Console.WriteLine("0: Afslutte program");
                 Console.Write("Indtast valg: ");
 
@@ -67,6 +69,16 @@ namespace Genspil
                     case "5":
                         MenuTitle("Brætspil på lager");
                         Game.DisplayGames(games);
+                        Game.SortGames(games);
+
+                        /*
+                        Console.Write("Sorter spil ( 1. Ja / 2. Nej ): ");
+                        string sortInput = Console.ReadLine();
+                        if (sortInput == "1")
+                        {
+                            Game.SortGames(games);
+                        }
+                        */
                         PressAnyKey();
                         break;
 
@@ -81,6 +93,13 @@ namespace Genspil
                         SearchGame(games);
                         PressAnyKey();
                         break;
+
+                    case "8":
+                        MenuTitle("Lagerliste");
+                        GameDescription.DisplayGameDescription(gameDescriptions);
+                        PressAnyKey();
+                        break;
+
                     case "0":
                         Console.WriteLine("Afslutter programmet");
                         return;
@@ -280,7 +299,7 @@ namespace Genspil
 
         public static void PressAnyKey()
         {
-            Console.WriteLine("\nTryk en vilkårlig tast for at fortsætte...");
+            Console.Write("\nTryk en vilkårlig tast for at fortsætte...");
             Console.ReadKey();
         }
     }

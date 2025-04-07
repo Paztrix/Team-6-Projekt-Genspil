@@ -52,7 +52,7 @@ namespace Genspil
         public static void DisplayGames(List<Game> games)
         {
             // Definerer hver kolonnes bredde
-            int col1Width = 12, col2Width = 10, col3Width = 8, col4Width = 15, col5Width = 5, col6Width = 10;
+            int col1Width = 16, col2Width = 10, col3Width = 8, col4Width = 15, col5Width = 5, col6Width = 10;
 
             // Beregner den totale bredde for separatorlinjen
             int totalWidth = col1Width + col2Width + col3Width + col4Width + col5Width + col6Width + 19;
@@ -80,6 +80,7 @@ namespace Genspil
         }
 
         //Checkout metode til at fjerne spil
+        /*
         public static void Checkout()
         {
             Console.Write("Indtast spillets navn: ");
@@ -112,25 +113,69 @@ namespace Genspil
                 Console.WriteLine("Ingen spil fundet med de angivne kriterier.");
             }
         }
+        */
 
-        public static void SortGames()
+        public static void SortGames(List<Game> games)
         {
+            while(true)
+            {
+                Console.Write("Sorter spil ( 1. Ja / 2. Nej ): ");
+                string sortInput = Console.ReadLine();
+                if (sortInput == "1")
+                {
+                    Console.Clear();
+                    Console.WriteLine("--- Sortere Spil Efter ---");
+                    Console.WriteLine("1. Sorter efter navn");
+                    Console.WriteLine("2. Sorter efter stand");
+                    Console.WriteLine("3. Sorter efter genre");
+                    Console.Write("Indtast valg: ");
+                    string choice = Console.ReadLine();
+
+                    switch (choice)
+                    {
+                        case "1":
+                            games = games.OrderBy(game => game.type.Name).ToList();
+                            break;
+
+                        case "2":
+                            games = games.OrderBy(game => game.GameCondition).ToList();
+                            break;
+
+                        case "3":
+                            games = games.OrderBy(game => game.type.GameGenre).ToList();
+                            break;
+                    }
+                    DisplayGames(games);
+                } else if (sortInput == "2")
+                {
+                    return;
+                }
+            }
+
+            /*
             Console.WriteLine("--- Sortere Spil Efter ---");
             Console.WriteLine("1. Sorter efter navn");
             Console.WriteLine("2. Sorter efter stand");
+            Console.WriteLine("3. Sorter efter genre");
             Console.Write("Indtast valg: ");
             string choice = Console.ReadLine();
 
             switch(choice)
             {
                 case "1":
-                    PseudoDatabase.games = PseudoDatabase.games.OrderBy(game => game.type.Name).ToList();
+                    games = games.OrderBy(game => game.type.Name).ToList();
                     break;
 
                 case "2":
-                    PseudoDatabase.games = PseudoDatabase.games.OrderBy(game => game.GameCondition).ToList();
+                    games = games.OrderBy(game => game.GameCondition).ToList();
+                    break;
+
+                case "3":
+                    games = games.OrderBy(game => game.type.GameGenre).ToList();
                     break;
             }
+            DisplayGames(games);
+            */
         }
     }
 }
