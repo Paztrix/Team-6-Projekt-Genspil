@@ -13,22 +13,13 @@ namespace Genspil
         // Offentlig read-only property. Viser spillets interne ID, til identifikation og persistens:
         public int Id => id;
 
-        public Game(int id, double price, GameDescription gametype, Condition condition = Condition.Perfect)
+        public Game(int id, double price, GameDescription gametype, Condition condition = Condition.Perfekt)
         {
             this.id = id;
             this.price = price;
             this.GameCondition = condition;
             this.type = gametype;
         }
-
-        //public static void DisplayGames()
-        //{
-        //    Console.WriteLine("Liste over oprettede spil:");
-        //    foreach (var game in PseudoDatabase.games)
-        //    {
-        //        Console.WriteLine($"Name: {game.type.Name}, Genre: {game.type.GameGenre}, Price: {game.price}, Age: {game.type.Age}, Players: {game.type.MinPlayers}-{game.type.MaxPlayers}, Condition: {game.GameCondition}, Description: {game.type.Description}");
-        //    }
-        //}
 
         //Display metode der printer spil
         public override string ToString()
@@ -49,6 +40,8 @@ namespace Genspil
 
             return new Game(id, price, description, condition);
         }
+
+        //Viser en liste af spil formateret i konsollen
         public static void DisplayGames(List<Game> games)
         {
             // Definerer hver kolonnes bredde
@@ -79,42 +72,7 @@ namespace Genspil
             Console.WriteLine(separator);
         }
 
-        //Checkout metode til at fjerne spil
-        /*
-        public static void Checkout()
-        {
-            Console.Write("Indtast spillets navn: ");
-            string gameName = Console.ReadLine();
-
-            Console.Write("Indtast spillets stand: ");
-            string conditionInput = Console.ReadLine();
-            if (!Enum.TryParse(conditionInput, out Condition gameCondition))
-            {
-                Console.WriteLine("Ugyldigt input for spillets stand.");
-                return;
-            }
-
-            Console.Write("Indtast spillets pris: ");
-            double gamePrice = double.Parse(Console.ReadLine());
-
-            //Tjekker om et spil findes med indtastede data og hvis ja, så slet det
-            var gameToCheckout = PseudoDatabase.games.FirstOrDefault(g =>
-                g.type.Name.Equals(gameName, StringComparison.OrdinalIgnoreCase) &&
-                g.GameCondition == gameCondition &&
-                g.price == gamePrice);
-
-            if (gameToCheckout != null)
-            {
-                PseudoDatabase.games.Remove(gameToCheckout);
-                Console.WriteLine($"Spillet {gameToCheckout.type.Name} er nu tjekket ud og fjernet fra lageret.");
-            }
-            else
-            {
-                Console.WriteLine("Ingen spil fundet med de angivne kriterier.");
-            }
-        }
-        */
-
+        //Sortere listen af spil
         public static void SortGames(List<Game> games)
         {
             while(true)
@@ -151,31 +109,6 @@ namespace Genspil
                     return;
                 }
             }
-
-            /*
-            Console.WriteLine("--- Sortere Spil Efter ---");
-            Console.WriteLine("1. Sorter efter navn");
-            Console.WriteLine("2. Sorter efter stand");
-            Console.WriteLine("3. Sorter efter genre");
-            Console.Write("Indtast valg: ");
-            string choice = Console.ReadLine();
-
-            switch(choice)
-            {
-                case "1":
-                    games = games.OrderBy(game => game.type.Name).ToList();
-                    break;
-
-                case "2":
-                    games = games.OrderBy(game => game.GameCondition).ToList();
-                    break;
-
-                case "3":
-                    games = games.OrderBy(game => game.type.GameGenre).ToList();
-                    break;
-            }
-            DisplayGames(games);
-            */
         }
     }
 }

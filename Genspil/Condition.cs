@@ -8,10 +8,10 @@ namespace Genspil
 {
     public enum Condition
     {
-        Perfect,
-        Fine,
-        Unplayable,
-        InWorkshop,
+        Perfekt,
+        Brugsspor,
+        Slidt,
+        Reperation,
         NA
     }
 }

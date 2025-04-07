@@ -1,11 +1,1 @@
-2;75;Jumanji;Perfect
-3;99;Monopoly;InWorkshop
-4;20;Ludo;Unplayable
-5;40;Ludo;Perfect
-6;99;Laban;Perfect
-7;99;Laban;Perfect
-8;99;Bingo;Perfect
-10;99;Jumanji;Fine
-11;99;Kosmos Settlers;Unplayable
-12;99;Matador;NA
-13;75;Jumanji;Fine
+1;99;Matador;Perfekt

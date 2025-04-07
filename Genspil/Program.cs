@@ -30,7 +30,7 @@ namespace Genspil
                 Console.WriteLine("6: Vis forespørgsler");
                 Console.WriteLine("7: Søg efter spil");
                 Console.WriteLine("8. Lagerliste");
-                Console.WriteLine("0: Afslutte program");
+                Console.WriteLine("0: Afslut program");
                 Console.Write("Indtast valg: ");
 
                 string input = Console.ReadLine();
@@ -70,15 +70,6 @@ namespace Genspil
                         MenuTitle("Brætspil på lager");
                         Game.DisplayGames(games);
                         Game.SortGames(games);
-
-                        /*
-                        Console.Write("Sorter spil ( 1. Ja / 2. Nej ): ");
-                        string sortInput = Console.ReadLine();
-                        if (sortInput == "1")
-                        {
-                            Game.SortGames(games);
-                        }
-                        */
                         PressAnyKey();
                         break;
 
@@ -112,6 +103,7 @@ namespace Genspil
             }
         }
 
+        //Mangler exception handling
         public static Game GameCreation(List<GameDescription> gameDescriptions, List<Game> games, List<Request> requests)
         {
             Console.Write("Navn på spil: ");
@@ -144,6 +136,7 @@ namespace Genspil
                 int minPlayers = int.Parse(Console.ReadLine());
                 Console.Write("Max. spillere: ");
                 int maxPlayers = int.Parse(Console.ReadLine());
+                Console.WriteLine("Familie, Kampagne, Puzzle, Strategi, Børn eller Quiz");
                 Console.Write("Genre: ");
                 string genreInput = Console.ReadLine();
                 Genre genre = Enum.TryParse(genreInput, out Genre parsedGenre) ? parsedGenre : Genre.NA;
@@ -158,17 +151,18 @@ namespace Genspil
             Console.Write("Indtast pris: ");
             double price = double.Parse(Console.ReadLine());
 
-            Console.Write("Indtast stand (Perfect, Fine, InWorkshop, Unplayable): ");
+            Console.Write("Indtast stand (Perfekt, Brugsspor, Slidt, Reperation): ");
             string conditionInput = Console.ReadLine();
             Condition condition = Enum.TryParse(conditionInput, out Condition parsedCondition) ? parsedCondition : Condition.NA;
 
             int nextId = games.Count > 0 ? games.Max(g => g.Id) + 1 : 1;
 
-            Console.WriteLine($"Spillet '{gameTypeToUse.Name}' er oprettet med succes og tilføjet til listen over spil!");
+            Console.WriteLine($"Spillet '{gameTypeToUse.Name}', er tilføjet til listen over spil!");
 
             return new Game(nextId, price, gameTypeToUse, condition);
         }
 
+        //Metode til at fjerne spil fra listen
         public static void CheckoutGame(List<Game> games)
         {
             Console.Write("Søg efter spilnavn: ");
@@ -208,6 +202,7 @@ namespace Genspil
             }
         }
 
+        //Opretter en forespørgsel
         public static Request CreateRequest(List<Request> requests)
         {
             Console.Write("Navn: ");
@@ -228,6 +223,7 @@ namespace Genspil
             return new Request(newId, createdOn, name, phone, email, requestedGame);
         }
 
+        //Fjerner en forespørgsel
         public static void RemoveRequest(List<Request> requests)
         {
             Console.Write("Søg efter navn: ");
@@ -266,7 +262,8 @@ namespace Genspil
                 Console.WriteLine("Ugyldigt valg.");
             }
         }
-        //Search for a game
+
+        //Søge efter specifikt spil ved navn
         public static void SearchGame(List<Game> games)
         {
             Console.Write("Indtast navn eller del af navnet på spil: ");

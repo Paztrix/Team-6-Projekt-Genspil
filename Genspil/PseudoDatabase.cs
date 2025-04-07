@@ -14,15 +14,15 @@ namespace Genspil
 
         public static void DatabaseSeeder()
         {
-            gametypes.Add(new GameDescription("Jumanji", "Farligt spil i junglen", 12, 3, 9, Genre.Campaign));
-            gametypes.Add(new GameDescription("Monopoly", "", 8, 4, 6, Genre.Familygame));
-            gametypes.Add(new GameDescription("Ludo", "", 4, 2, 4, Genre.Familygame));
+            gametypes.Add(new GameDescription("Jumanji", "Farligt spil i junglen", 12, 3, 9, Genre.Kampagne));
+            gametypes.Add(new GameDescription("Monopoly", "", 8, 4, 6, Genre.Familie));
+            gametypes.Add(new GameDescription("Ludo", "", 4, 2, 4, Genre.Familie));
 
-            games.Add(new Game(1, 50.00, gametypes[0], Condition.Fine));
-            games.Add(new Game(2, 75.00, gametypes[0], Condition.Perfect));
-            games.Add(new Game(3, 99.00, gametypes[1], Condition.InWorkshop));
-            games.Add(new Game(4, 20.00, gametypes[2], Condition.Unplayable));
-            games.Add(new Game(5, 40.00, gametypes[2], Condition.Perfect));
+            games.Add(new Game(1, 50.00, gametypes[0], Condition.Brugsspor));
+            games.Add(new Game(2, 75.00, gametypes[0], Condition.Perfekt));
+            games.Add(new Game(3, 99.00, gametypes[1], Condition.Reperation));
+            games.Add(new Game(4, 20.00, gametypes[2], Condition.Slidt));
+            games.Add(new Game(5, 40.00, gametypes[2], Condition.Perfekt));
 
             requests.Add(new Request(1, DateTime.Now.AddDays(-2), "John Doe", "1234567890", "johndoe@email.com", "Skak"));
             requests.Add(new Request(2, DateTime.Now.AddDays(-1), "Jane Smith", "9876543210", "janesmith@email.com", "Backgammon"));

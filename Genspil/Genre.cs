@@ -8,9 +8,12 @@ namespace Genspil
 {
     public enum Genre
     {
-        Familygame,
-        Campaign,
+        Familie,
+        Kampagne,
         Puzzle,
+        Strategi,
+        Børn,
+        Quiz,
         NA
     }
 }

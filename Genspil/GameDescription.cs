@@ -47,6 +47,7 @@ namespace Genspil
             );
         }
 
+        //Printer en liste med antal spil og forespørgsler
         public static void DisplayGameDescription(List<GameDescription> gameDescriptions)
         {
             List<Game> games = DataHandler.LoadGames(gameDescriptions);
@@ -90,7 +91,5 @@ namespace Genspil
             Console.WriteLine(separator);
 
         }
-
-      
     }
 }
