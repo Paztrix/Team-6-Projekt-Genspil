@@ -1,5 +1,6 @@
 using Genspil;
 using System.Linq;
+using System.Security.AccessControl;
 
 namespace Genspil
 {
@@ -26,6 +27,7 @@ namespace Genspil
                 Console.WriteLine("4: Fjern forespørgsel");
                 Console.WriteLine("5: Vis spil");
                 Console.WriteLine("6: Vis forespørgsler");
+                Console.WriteLine("7: Søg efter spil");
                 Console.WriteLine("0: Afslutte program");
                 Console.Write("Indtast valg: ");
 
@@ -74,6 +76,11 @@ namespace Genspil
                         PressAnyKey();
                         break;
 
+                    case "7":
+                        MenuTitle("Søg efter spil");
+                        SearchGame(games);
+                        PressAnyKey();
+                        break;
                     case "0":
                         Console.WriteLine("Afslutter programmet");
                         return;
@@ -157,13 +164,13 @@ namespace Genspil
             }
 
             Console.WriteLine("\nFundne spil:");
-            Console.WriteLine($"{"Nr.",-5} {"Navn",-20} {"Pris",-10} {"Stand",-12} {"ID",-5}");
+            Console.WriteLine($"{"Nr.",-5} {"Navn",-20} {"Pris",-10} {"Stand",-12}");
             Console.WriteLine(new string('-', 55));
 
             for (int i = 0; i < matchingGames.Count; i++)
             {
                 var g = matchingGames[i];
-                Console.WriteLine($"{i,-5} {g.type.Name,-20} {g.price,-10:F2} {g.GameCondition,-12} {g.Id,-5}");
+                Console.WriteLine($"{i,-5} {g.type.Name,-20} {g.price,-10:F2} {g.GameCondition,-12}");
             }
 
             Console.Write("\nIndtast nummer på spil du vil checkout: ");
@@ -238,7 +245,31 @@ namespace Genspil
                 Console.WriteLine("Ugyldigt valg.");
             }
         }
+        //Search for a game
+        public static void SearchGame(List<Game> games)
+        {
+            Console.Write("Indtast navn eller del af navnet på spil: ");
+            string search = Console.ReadLine()?.Trim().ToLower();
 
+            var matchingGames = games
+                .Where(g => g.type.Name.ToLower().Contains(search))
+                .ToList();
+
+            if (matchingGames.Count == 0)
+            {
+                Console.WriteLine("Ingen spil matcher søgningen.");
+                return;
+            }
+
+            Console.WriteLine("\nFundne spil:");
+            Console.WriteLine($"{"Navn",-25} {"Pris",-10} {"Stand",-15}");
+            Console.WriteLine(new string('-', 60));
+
+            foreach (var game in matchingGames)
+            {
+                Console.WriteLine($"{game.type.Name,-25} {game.price,-10:F2} {game.GameCondition,-15}");
+            }
+        }
         public static void MenuTitle(string title)
         {
             Console.Clear();

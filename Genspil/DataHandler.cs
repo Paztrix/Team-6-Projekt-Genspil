@@ -9,12 +9,13 @@ namespace Genspil
     {
         private static string dataFolder = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\..\Data");
 
+        // Tillader at sætte ny Data-mappe dynamisk, f.eks. til test
         public static void SetDataFolder(string folderPath)
         {
             dataFolder = folderPath;
             Directory.CreateDirectory(dataFolder);
         }
-
+        // Genskaber standardmappen (f.eks. til nulstilling efter test)
         public static void ResetDataFolder()
         {
             dataFolder = Path.Combine(AppContext.BaseDirectory, "Data");
