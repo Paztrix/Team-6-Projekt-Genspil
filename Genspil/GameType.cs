@@ -10,7 +10,7 @@ using static System.Net.Mime.MediaTypeNames;
 
 namespace Genspil
 {
-    public class GameDescription
+    public class GameType
     {
         // Basisoplysninger
         public string Name { get; set; }
@@ -20,7 +20,7 @@ namespace Genspil
         public int MaxPlayers { get; set; }
         public Genre GameGenre { get; set; }
 
-        public GameDescription(string name, string description = "", int minAge = 0, int minPlayers = 0, int maxPlayers = 99, Genre gameGenre = Genre.NA)
+        public GameType(string name, string description = "", int minAge = 0, int minPlayers = 0, int maxPlayers = 99, Genre gameGenre = Genre.NA)
         {
             this.Name = name;
             this.Description = description;
@@ -34,10 +34,10 @@ namespace Genspil
             return $"{Name};{Description};{MinAge};{MinPlayers};{MaxPlayers};{GameGenre}";
         }
 
-        public static GameDescription FromString(string line)
+        public static GameType FromString(string line)
         {
             var parts = line.Split(';');
-            return new GameDescription(
+            return new GameType(
                 parts[0],                     // Name
                 parts[1],                     // Description
                 int.Parse(parts[2]),          // MinAge
@@ -48,9 +48,9 @@ namespace Genspil
         }
 
         //Printer en liste med antal spil og forespørgsler
-        public static void DisplayGameDescription(List<GameDescription> gameDescriptions)
+        public static void DisplayGameDescription(List<GameType> gameTypes)
         {
-            List<Game> games = DataHandler.LoadGames(gameDescriptions);
+            List<Game> games = DataHandler.LoadGames(gameTypes);
             List<Request> requests = DataHandler.LoadRequests();
 
             // Definerer hver kolonnes bredde
@@ -66,7 +66,7 @@ namespace Genspil
             Console.WriteLine(separator);
 
 
-            foreach (var gt in gameDescriptions)
+            foreach (var gt in gameTypes)
             {
                 int gameCount = 0;
                 foreach (Game game in games) 

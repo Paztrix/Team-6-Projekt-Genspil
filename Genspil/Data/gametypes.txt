@@ -1,0 +1,9 @@
+Matador;;2;2;8;Familie
+Jumanji;;3;2;5;Familie
+Ludo;Sjovt spil for hele familien;4;2;4;Familie
+Cluedo;;7;2;8;Strategi
+Partners;;8;4;4;Quiz
+Vildkatten;Sjovt børnespil;5;2;6;Børn
+Coco Crazy;;5;2;8;Børn
+Ego;;15;2;6;Strategi
+Sequence;;7;2;12;Strategi

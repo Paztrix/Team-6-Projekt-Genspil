@@ -22,10 +22,10 @@ namespace Genspil
             Directory.CreateDirectory(dataFolder);
         }
 
-        // --- GameDescriptions ---
-        public static void SaveGameDescriptions(List<GameDescription> descriptions)
+        // --- GameTypes ---
+        public static void SameGameTypes(List<GameType> descriptions)
         {
-            string path = Path.Combine(dataFolder, "gamedescriptions.txt");
+            string path = Path.Combine(dataFolder, "gametypes.txt");
             using StreamWriter writer = new StreamWriter(path);
             foreach (var desc in descriptions)
             {
@@ -33,17 +33,17 @@ namespace Genspil
             }
         }
 
-        public static List<GameDescription> LoadGameDescriptions()
+        public static List<GameType> LoadGameTypes()
         {
-            string path = Path.Combine(dataFolder, "gamedescriptions.txt");
-            List<GameDescription> result = new();
+            string path = Path.Combine(dataFolder, "gametypes.txt");
+            List<GameType> result = new();
             if (!File.Exists(path)) return result;
 
             using StreamReader reader = new StreamReader(path);
             string? line;
             while ((line = reader.ReadLine()) != null)
             {
-                result.Add(GameDescription.FromString(line));
+                result.Add(GameType.FromString(line));
             }
 
             return result;
@@ -60,7 +60,7 @@ namespace Genspil
             }
         }
 
-        public static List<Game> LoadGames(List<GameDescription> descriptions)
+        public static List<Game> LoadGames(List<GameType> descriptions)
         {
             string path = Path.Combine(dataFolder, "games.txt");
             List<Game> result = new();

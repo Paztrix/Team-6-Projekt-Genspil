@@ -1,1 +1,11 @@
 1;99;Matador;Perfekt
+2;75;Jumanji;Brugsspor
+3;125;Ludo;Perfekt
+4;150;Cluedo;Brugsspor
+5;79;Partners;Brugsspor
+6;89;Vildkatten;Perfekt
+7;129;Coco Crazy;Perfekt
+8;120;Ego;Brugsspor
+9;129;Ego;Perfekt
+10;149;Matador;Perfekt
+11;169;Sequence;Slidt

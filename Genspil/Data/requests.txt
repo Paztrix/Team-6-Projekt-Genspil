@@ -1,0 +1,5 @@
+1;07-04-2025 17:50:24;Berit;13443123;berit@email.dk;Matador
+2;08-04-2025 19:28:58;Preben;12493539;preben@preben.dk;Ego
+3;08-04-2025 19:29:23;Jørge;12321321;jørgen@mail.dk;Ego
+4;08-04-2025 19:29:39;Anja;30294929;anja@outlook.dk;Matador
+5;08-04-2025 19:53:51;Bent;23432532;bent@bent.dk;Stratego

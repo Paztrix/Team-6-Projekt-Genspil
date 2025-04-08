@@ -9,11 +9,11 @@ namespace Genspil
         private int id;
         public double price { get; private set; }
         public Condition GameCondition { get; private set; }
-        public GameDescription type { get; private set; }
+        public GameType type { get; private set; }
         // Offentlig read-only property. Viser spillets interne ID, til identifikation og persistens:
         public int Id => id;
 
-        public Game(int id, double price, GameDescription gametype, Condition condition = Condition.Perfekt)
+        public Game(int id, double price, GameType gametype, Condition condition = Condition.Perfekt)
         {
             this.id = id;
             this.price = price;
@@ -27,7 +27,7 @@ namespace Genspil
             return $"{id};{price};{type.Name};{GameCondition}";
         }
 
-        public static Game FromString(string line, List<GameDescription> descriptions)
+        public static Game FromString(string line, List<GameType> descriptions)
         {
             var parts = line.Split(';');
             int id = int.Parse(parts[0]);
@@ -36,7 +36,7 @@ namespace Genspil
             Condition condition = Enum.Parse<Condition>(parts[3]);
 
             var description = descriptions.FirstOrDefault(d => d.Name == gameTypeName)
-                ?? throw new Exception($"GameDescription '{gameTypeName}' not found.");
+                ?? throw new Exception($"Gametype '{gameTypeName}' not found.");
 
             return new Game(id, price, description, condition);
         }

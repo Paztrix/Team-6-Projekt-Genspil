@@ -10,13 +10,13 @@ namespace Genspil
     {
         public static List<Game> games = new List<Game>();
         public static List<Request> requests = new List<Request>();
-        public static List<GameDescription> gametypes = new List<GameDescription>();
+        public static List<GameType> gametypes = new List<GameType>();
 
         public static void DatabaseSeeder()
         {
-            gametypes.Add(new GameDescription("Jumanji", "Farligt spil i junglen", 12, 3, 9, Genre.Kampagne));
-            gametypes.Add(new GameDescription("Monopoly", "", 8, 4, 6, Genre.Familie));
-            gametypes.Add(new GameDescription("Ludo", "", 4, 2, 4, Genre.Familie));
+            gametypes.Add(new GameType("Jumanji", "Farligt spil i junglen", 12, 3, 9, Genre.Kampagne));
+            gametypes.Add(new GameType("Monopoly", "", 8, 4, 6, Genre.Familie));
+            gametypes.Add(new GameType("Ludo", "", 4, 2, 4, Genre.Familie));
 
             games.Add(new Game(1, 50.00, gametypes[0], Condition.Brugsspor));
             games.Add(new Game(2, 75.00, gametypes[0], Condition.Perfekt));

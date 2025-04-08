@@ -16,13 +16,13 @@ namespace Genspil.Test
         public void Game_Constructor_SetsDefaultCondition_WhenNotProvided()
         {
             // Arrange
-            var gameType = new GameDescription("Uno", "Card game", 7, 2, 10);
+            var gameType = new GameType("Uno", "Card game", 7, 2, 10);
 
             // Act
             var game = new Game(4, 49.95, gameType); // ingen condition angivet
 
             // Assert
-            Assert.AreEqual(Condition.Perfect, game.GameCondition);
+            Assert.AreEqual(Condition.Perfekt, game.GameCondition);
         }
         /// <summary>
         /// Tester om konstruktøren korrekt sætter pris, condition (default) og gametype.
@@ -31,14 +31,14 @@ namespace Genspil.Test
         public void Game_Constructor_SetsPropertiesCorrectly()
         {
             // Arrange
-            var gameType = new GameDescription("Catan", "A classic game", 10, 3, 4);
+            var gameType = new GameType("Catan", "A classic game", 10, 3, 4);
 
             // Act
             var game = new Game(1, 299.95, gameType);
 
             // Assert
             Assert.AreEqual(299.95, game.price);
-            Assert.AreEqual(Condition.Perfect, game.GameCondition);
+            Assert.AreEqual(Condition.Perfekt, game.GameCondition);
             Assert.AreEqual(gameType, game.type);
         }
         /// <summary>
@@ -48,13 +48,13 @@ namespace Genspil.Test
         public void Game_Constructor_SetsCustomCondition()
         {
             // Arrange
-            var gameType = new GameDescription("Risk", "Global domination", 12, 2, 6);
+            var gameType = new GameType("Risk", "Global domination", 12, 2, 6);
 
             // Act
-            var game = new Game(2, 199.95, gameType, Condition.InWorkshop);
+            var game = new Game(2, 199.95, gameType, Condition.Reperation);
 
             // Assert
-            Assert.AreEqual(Condition.InWorkshop, game.GameCondition);
+            Assert.AreEqual(Condition.Reperation, game.GameCondition);
         }
 
         /// <summary>
@@ -64,7 +64,7 @@ namespace Genspil.Test
         public void DisplayGames_PrintsExpectedOutput()
         {
             // Arrange
-            var gameType = new GameDescription("Chess", "Classic game", 6, 2, 2, Genre.Familygame);
+            var gameType = new GameType("Chess", "Classic game", 6, 2, 2, Genre.Familie);
             var game = new Game(3, 100.00, gameType);
 
             var games = new List<Game> { game };
@@ -79,7 +79,7 @@ namespace Genspil.Test
             var output = sw.ToString();
             Assert.IsTrue(output.Contains("Chess"));
             Assert.IsTrue(output.Contains("100"));
-            Assert.IsTrue(output.Contains("Perfect"));
+            Assert.IsTrue(output.Contains("Perfekt"));
         }
     }
 }

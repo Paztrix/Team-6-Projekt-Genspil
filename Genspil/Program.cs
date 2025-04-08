@@ -9,14 +9,14 @@ namespace Genspil
     {
         static void Main(string[] args)
         {
-            List<GameDescription> gameDescriptions = DataHandler.LoadGameDescriptions();
+            List<GameType> gameDescriptions = DataHandler.LoadGameTypes();
             List<Game> games = DataHandler.LoadGames(gameDescriptions);
             List<Request> requests = DataHandler.LoadRequests();
 
             ShowMenu(games, gameDescriptions, requests);
         }
 
-        public static void ShowMenu(List<Game> games, List<GameDescription> gameDescriptions, List<Request> requests)
+        public static void ShowMenu(List<Game> games, List<GameType> gameDescriptions, List<Request> requests)
         {
             while (true)
             {
@@ -87,7 +87,7 @@ namespace Genspil
 
                     case "8":
                         MenuTitle("Lagerliste");
-                        GameDescription.DisplayGameDescription(gameDescriptions);
+                        GameType.DisplayGameDescription(gameDescriptions);
                         PressAnyKey();
                         break;
 
@@ -104,7 +104,7 @@ namespace Genspil
         }
 
         //Mangler exception handling
-        public static Game GameCreation(List<GameDescription> gameDescriptions, List<Game> games, List<Request> requests)
+        public static Game GameCreation(List<GameType> gameDescriptions, List<Game> games, List<Request> requests)
         {
             Console.Write("Navn på spil: ");
             string gameName = Console.ReadLine();
@@ -118,9 +118,9 @@ namespace Genspil
                 Console.WriteLine($"{gameName} har {matchingRequests.Count} {(matchingRequests.Count == 1 ? "forespørgsel" : "forespørgsler")}.");
             }
 
-            GameDescription existingGameType = gameDescriptions
+            GameType existingGameType = gameDescriptions
                 .FirstOrDefault(gt => gt.Name.Equals(gameName, StringComparison.OrdinalIgnoreCase));
-            GameDescription gameTypeToUse;
+            GameType gameTypeToUse;
 
             if (existingGameType != null)
             {
@@ -141,13 +141,13 @@ namespace Genspil
                 string genreInput = Console.ReadLine();
                 Genre genre = Enum.TryParse(genreInput, out Genre parsedGenre) ? parsedGenre : Genre.NA;
 
-                // Opretter en ny GameDescription og tilføjer den til listen
-                gameTypeToUse = new GameDescription(gameName, gameDesc, minAge, minPlayers, maxPlayers, genre);
+                // Opretter en ny GameType og tilføjer den til listen
+                gameTypeToUse = new GameType(gameName, gameDesc, minAge, minPlayers, maxPlayers, genre);
                 gameDescriptions.Add(gameTypeToUse);
-                DataHandler.SaveGameDescriptions(gameDescriptions);
+                DataHandler.SameGameTypes(gameDescriptions);
             }
 
-            // Spørg om pris og stand, ligemeget om GameDescription eksisterer eller ej
+            // Spørg om pris og stand, ligemeget om GameType eksisterer eller ej
             Console.Write("Indtast pris: ");
             double price = double.Parse(Console.ReadLine());
 
@@ -325,8 +325,8 @@ Method CreateNewGame():
     Display ( indtast maksimum antal spillere: )
     maxPlayers = userData()
 
-    //Opret ny instans af GameDescription med de indtastede oplysninger
-    newGame = new GameDescription(gameName, gameDesc, minAge, minPlayers, maxPlayers)
+    //Opret ny instans af GameType med de indtastede oplysninger
+    newGame = new GameType(gameName, gameDesc, minAge, minPlayers, maxPlayers)
 
     //bekræft spillet er oprettet
     Display ( Spillet {gameName} er oprettet)
